@@ -149,8 +149,47 @@
                 </div>
             </div>
 
-            <!-- Centered MyKad Search Box (Shown when Cloud is Connected) -->
+            <!-- Portal Closed / Deadline Expired Notice Card -->
+            <div id="parent-closed-notice" class="hidden bg-white rounded-2xl border border-rose-200 shadow-sm overflow-hidden">
+                <div class="bg-gradient-to-r from-rose-900 via-rose-800 to-slate-900 px-6 py-6 sm:px-8 text-white">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/15 text-rose-100 mb-2">
+                        <i data-lucide="lock" class="w-3.5 h-3.5 text-amber-300"></i>
+                        <span data-i18n="portal_closed_badge">查询通道已关闭 · Portal Semakan Ditutup</span>
+                    </span>
+                    <h2 class="text-xl sm:text-2xl font-bold tracking-tight" data-i18n="portal_closed_title">
+                        PAJSK 成绩在线查询时段已结束 · Tempoh Semakan Keputusan PAJSK Telah Tamat
+                    </h2>
+                </div>
+                <div class="p-6 sm:p-10 text-center space-y-4">
+                    <div class="w-16 h-16 rounded-2xl bg-rose-50 text-rose-600 border border-rose-200 flex items-center justify-center mx-auto">
+                        <i data-lucide="calendar-x-2" class="w-8 h-8"></i>
+                    </div>
+                    <div class="max-w-xl mx-auto space-y-2">
+                        <p id="parent-closed-msg-zh" class="text-base sm:text-lg font-bold text-slate-900">
+                            本学年 PAJSK 线上查询通道已关闭。如有疑问，请联系学校课外活动副校长（PK Kokurikulum）。
+                        </p>
+                        <p id="parent-closed-msg-bm" class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            Tempoh semakan dalam talian keputusan PAJSK telah ditutup. Sila hubungi PK Kokurikulum sekolah untuk sebarang pertanyaan.
+                        </p>
+                    </div>
+                    <div id="parent-closed-deadline-pill" class="hidden inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-700">
+                        <i data-lucide="clock" class="w-4 h-4 text-rose-600"></i>
+                        <span id="parent-closed-deadline-text">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Centered MyKad Search Box (Shown when Cloud is Connected & Portal is Open) -->
             <div id="parent-search-card" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-7">
+                <!-- Optional Active Deadline Notice Banner -->
+                <div id="parent-deadline-banner" class="hidden bg-amber-50 border-b border-amber-200 px-6 py-2.5 flex flex-wrap items-center justify-between gap-2 text-xs font-semibold text-amber-900">
+                    <span class="inline-flex items-center gap-1.5">
+                        <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-600"></i>
+                        <span data-i18n="parent_deadline_prefix">线上查询截止时间 · Tarikh Tutup Semakan:</span>
+                    </span>
+                    <span id="parent-deadline-value" class="font-mono font-bold text-rose-700">-</span>
+                </div>
+
                 <div class="bg-gradient-to-r from-[#0f294a] via-[#1d4ed8] to-[#059669] px-6 py-6 sm:px-8 text-white">
                     <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-white/15 text-white mb-2">
                         <i data-lucide="file-text" class="w-3.5 h-3.5 text-amber-300"></i>
@@ -523,8 +562,13 @@
 
                     <!-- Tab 2: Sign Up -->
                     <form id="auth-form-signup" onsubmit="handleSupabaseSignUp(event)" class="hidden space-y-4">
-                        <div class="p-3 rounded-xl bg-blue-50 border border-blue-200 text-xs text-blue-800 leading-relaxed" data-i18n="signup_hint">
-                            首次使用请注册副校长专属邮箱账号，设置您自己的管理密码。 / Sila daftar akaun e-mel rasmi PK Kokurikulum dan tetapkan kata laluan anda.
+                        <div class="p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-xs text-blue-900 space-y-1.5 leading-relaxed">
+                            <p class="font-semibold" data-i18n="signup_hint">
+                                首次使用请注册副校长专属邮箱账号，设置您自己的管理密码。 / Sila daftar akaun e-mel rasmi PK Kokurikulum dan tetapkan kata laluan anda.
+                            </p>
+                            <p class="text-[11px] text-blue-700 border-t border-blue-200/80 pt-1.5">
+                                <strong>邮箱确认提示 / Nota Pengesahan E-mel:</strong> 若 Supabase 开启了邮件验证，请点击邮件中的 <em>Confirm your mail</em>，或在 Supabase 后台 <code class="bg-white/80 px-1 rounded">Authentication → Providers → Email</code> 关闭 <em>Confirm email</em> 即可直接登录。
+                            </p>
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="label_email">副校长邮箱 · E-mel Rasmi</label>
@@ -704,11 +748,11 @@
                 <div class="p-4 sm:p-8 flex-grow space-y-6 max-w-7xl w-full mx-auto">
 
                     <!-- ===================================================== -->
-                    <!-- SECTION A: BATCH UPLOAD OFFICIAL MOEISSPPB PDFs       -->
+                    <!-- SECTION A: BATCH PDF UPLOAD (DEFAULT)                 -->
                     <!-- ===================================================== -->
                     <div id="admin-sec-upload" class="space-y-6">
-                        <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm">
-                            <div class="mb-6">
+                        <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-5">
+                            <div>
                                 <h3 class="text-base sm:text-lg font-bold text-slate-900" data-i18n="upload_card_title">
                                     拖入或选择从 MOEISSPPB 下载的学生个人 PDF 成绩单 · Muat Naik Berkelompok Fail PDF MOEISSPPB
                                 </h3>
@@ -717,65 +761,69 @@
                                 </p>
                             </div>
 
-                            <!-- Drag-and-Drop Multi-File Uploader -->
-                            <div id="admin-pdf-dropzone"
-                                onclick="document.getElementById('admin-pdf-input').click()"
+                            <!-- Drag & Drop Zone -->
+                            <div id="pdf-dropzone"
+                                onclick="document.getElementById('pdf-file-input').click()"
                                 class="border-2 border-dashed border-blue-300 hover:border-blue-600 bg-blue-50/40 hover:bg-blue-50/80 rounded-2xl p-8 sm:p-12 text-center cursor-pointer transition group">
-                                <input type="file" id="admin-pdf-input" accept="application/pdf,.pdf" multiple class="hidden" onchange="handleAdminFileSelect(event)">
-                                <div class="w-16 h-16 rounded-2xl bg-white shadow-sm border border-blue-100 text-blue-700 group-hover:scale-105 transition flex items-center justify-center mx-auto mb-4">
-                                    <i data-lucide="cloud-upload" class="w-8 h-8"></i>
+                                <input type="file" id="pdf-file-input" accept="application/pdf,.pdf" multiple class="hidden" onchange="handleBatchPdfUpload(this.files); this.value='';">
+                                <div class="w-16 h-16 rounded-2xl bg-blue-100 text-blue-700 group-hover:scale-105 transition flex items-center justify-center mx-auto mb-4 shadow-xs">
+                                    <i data-lucide="file-up" class="w-8 h-8"></i>
                                 </div>
-                                <p class="text-base font-bold text-slate-900" data-i18n="dropzone_title">
+                                <h4 class="text-sm sm:text-base font-bold text-slate-900" data-i18n="dropzone_title">
                                     点击选择 PDF 文件，或将多份官方成绩单拖拽至此区域 · Klik atau Seret Fail PDF ke Sini
-                                </p>
-                                <p class="text-xs sm:text-sm text-slate-500 mt-1.5" data-i18n="dropzone_sub">
+                                </h4>
+                                <p class="text-xs text-slate-500 mt-1.5 max-w-xl mx-auto" data-i18n="dropzone_sub">
                                     相同 No. MyKad 将自动覆盖更新为最新原版 PDF · Rekod No. MyKad yang sama akan dikemas kini secara automatik
                                 </p>
-                                <span class="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-700 text-white text-xs font-semibold shadow-sm">
-                                    <i data-lucide="folder-plus" class="w-4 h-4"></i>
-                                    <span data-i18n="dropzone_btn">选择 PDF 文件 (支持多选) · Pilih Fail PDF</span>
-                                </span>
+                                <div class="mt-5">
+                                    <span class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-700 group-hover:bg-blue-800 text-white text-xs sm:text-sm font-semibold shadow-sm transition">
+                                        <i data-lucide="folder-plus" class="w-4 h-4"></i>
+                                        <span data-i18n="dropzone_btn">选择 PDF 文件 (支持多选) · Pilih Fail PDF</span>
+                                    </span>
+                                </div>
                             </div>
 
-                            <!-- Live Progress Bar -->
-                            <div id="admin-upload-progress" class="hidden mt-6 bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                <div class="flex items-center justify-between text-xs font-semibold text-slate-700 mb-2">
-                                    <span id="admin-progress-label">...</span>
-                                    <span id="admin-progress-pct">0%</span>
+                            <!-- Progress Indicator -->
+                            <div id="upload-progress-wrap" class="hidden space-y-2 pt-1">
+                                <div class="flex items-center justify-between text-xs font-semibold text-blue-800">
+                                    <span id="upload-progress-label">正在上传与解析... / Memproses...</span>
+                                    <span id="upload-progress-pct">0%</span>
                                 </div>
-                                <div class="w-full bg-slate-200 rounded-full h-2.5 overflow-hidden">
-                                    <div id="admin-progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-200" style="width: 0%"></div>
+                                <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                                    <div id="upload-progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Live Upload & Parsing Log Table -->
+                        <!-- Real-Time Upload Log Table -->
                         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                            <div class="px-6 py-4 border-b border-slate-200">
-                                <h4 class="text-sm sm:text-base font-bold text-slate-900" data-i18n="upload_log_title">
-                                    实时上传与解析日志 · Log Muat Naik & Analisis Masa Nyata
-                                </h4>
-                                <p class="text-xs text-slate-500" data-i18n="upload_log_sub">
-                                    上传完成后家长即可凭孩子身份证号查询原版 PDF · Ibu bapa boleh terus menyemak slip PDF selepas muat naik selesai
-                                </p>
+                            <div class="px-6 py-4 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                <div>
+                                    <h4 class="text-sm sm:text-base font-bold text-slate-900" data-i18n="upload_log_title">
+                                        实时上传与解析日志 · Log Muat Naik & Analisis Masa Nyata
+                                    </h4>
+                                    <p class="text-xs text-slate-500" data-i18n="upload_log_sub">
+                                        上传完成后家长即可凭孩子身份证号查询原版 PDF · Ibu bapa boleh terus menyemak slip PDF selepas muat naik selesai
+                                    </p>
+                                </div>
                             </div>
 
                             <div class="overflow-x-auto">
-                                <table class="w-full text-left border-collapse">
+                                <table class="w-full text-left border-collapse text-xs sm:text-sm">
                                     <thead>
                                         <tr class="bg-slate-50 text-slate-600 text-xs uppercase tracking-wider border-b border-slate-200">
                                             <th class="py-3 px-4 font-semibold" data-i18n="th_filename">文件名 · Nama Fail</th>
-                                            <th class="py-3 px-3 font-semibold">No. MyKad</th>
                                             <th class="py-3 px-3 font-semibold" data-i18n="th_student_name">学生姓名 · Nama Murid</th>
+                                            <th class="py-3 px-3 font-semibold">No. MyKad</th>
                                             <th class="py-3 px-3 font-semibold" data-i18n="th_kelas">班级 · Kelas</th>
                                             <th class="py-3 px-3 font-semibold text-right">10% / Gred</th>
-                                            <th class="py-3 px-3 font-semibold text-center" data-i18n="th_status">状态 · Status</th>
+                                            <th class="py-3 px-3 font-semibold" data-i18n="th_status">状态 · Status</th>
                                             <th class="py-3 px-4 font-semibold text-center" data-i18n="th_actions">操作 · Tindakan</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="admin-upload-log-body" class="divide-y divide-slate-200 text-xs sm:text-sm">
+                                    <tbody id="upload-queue-tbody" class="divide-y divide-slate-200">
                                         <tr>
-                                            <td colspan="7" class="py-9 text-center text-slate-400" data-i18n="upload_log_empty">
+                                            <td colspan="7" class="py-10 text-center text-slate-400 text-xs sm:text-sm" data-i18n="upload_log_empty">
                                                 暂无本次上传记录 · Tiada rekod muat naik baharu
                                             </td>
                                         </tr>
@@ -786,171 +834,441 @@
                     </div>
 
                     <!-- ===================================================== -->
-                    <!-- SECTION B: SCHOOL-WIDE ANALYTICS DASHBOARD            -->
+                    <!-- SECTION B: ALL-IN-ONE PAJSK ANALYTICS DASHBOARD       -->
                     <!-- ===================================================== -->
                     <div id="admin-sec-analytics" class="hidden space-y-6">
 
-                        <!-- Filter Dropdowns & Export CSV -->
-                        <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                            <div class="flex flex-wrap items-center gap-3">
-                                <span class="text-xs font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1.5">
-                                    <i data-lucide="filter" class="w-3.5 h-3.5 text-blue-700"></i>
-                                    <span data-i18n="ana_filter_label">筛选 · Tapisan:</span>
-                                </span>
-                                <select id="ana-filter-tahun" onchange="handleAnalyticsTahunChange()"
-                                    class="px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600">
-                                    <option value="ALL">全部年级 · Semua Tahun</option>
-                                </select>
-                                <select id="ana-filter-kelas" onchange="renderAdminAnalytics()"
-                                    class="px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600">
-                                    <option value="ALL">全部班级 · Semua Kelas</option>
-                                </select>
+                        <!-- Top Analytics Mode Switcher & Scope Filter Bar -->
+                        <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+                            <!-- Mode Switcher: Group/Domain vs Individual -->
+                            <div class="inline-flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 self-start">
+                                <button type="button" id="ana-mode-btn-group" onclick="switchAnalyticsMode('group')"
+                                    class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-[#0f294a] text-white shadow-xs transition flex items-center gap-1.5">
+                                    <i data-lucide="layers" class="w-4 h-4"></i>
+                                    <span data-i18n="ana_mode_group">总分析与专项分析 · Analisis Keseluruhan & Bidang</span>
+                                </button>
+                                <button type="button" id="ana-mode-btn-individual" onclick="switchAnalyticsMode('individual')"
+                                    class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5">
+                                    <i data-lucide="user-search" class="w-4 h-4"></i>
+                                    <span data-i18n="ana_mode_individual">个人深度分析 · Analisis Individu</span>
+                                </button>
                             </div>
 
-                            <button onclick="exportSchoolAnalyticsCSV()"
-                                class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition flex items-center justify-center gap-2 shrink-0">
-                                <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
-                                <span data-i18n="btn_export_csv">导出全校报表 CSV · Eksport Laporan CSV</span>
-                            </button>
-                        </div>
+                            <!-- Scope Filter Controls (Group Mode) + Export CSV -->
+                            <div class="flex flex-wrap items-center gap-2.5">
+                                <div id="ana-group-filters" class="flex flex-wrap items-center gap-2">
+                                    <span class="text-xs font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1">
+                                        <i data-lucide="filter" class="w-3.5 h-3.5 text-blue-700"></i>
+                                        <span data-i18n="ana_filter_label">筛选 · Tapisan:</span>
+                                    </span>
+                                    <select id="ana-filter-tahun" onchange="handleAnalyticsTahunChange()"
+                                        class="px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600">
+                                        <option value="ALL">全校所有年级 · Semua Tahun</option>
+                                    </select>
+                                    <select id="ana-filter-kelas" onchange="renderAdminAnalytics()"
+                                        class="px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600">
+                                        <option value="ALL">全部班级 · Semua Kelas</option>
+                                    </select>
+                                </div>
 
-                        <!-- 4 KPI Summary Cards -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-xs font-semibold text-slate-500" data-i18n="kpi_total_title">总评估人数 · Jumlah Murid</span>
-                                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
-                                        <i data-lucide="users" class="w-4 h-4"></i>
-                                    </div>
-                                </div>
-                                <div class="mt-3 flex items-baseline gap-2">
-                                    <span id="kpi-total-students" class="text-3xl font-extrabold text-slate-900">0</span>
-                                    <span class="text-xs text-slate-500" data-i18n="unit_murid">人 / Murid</span>
-                                </div>
-                                <p id="kpi-class-list" class="text-xs text-blue-700 font-medium mt-2 truncate">-</p>
-                            </div>
-
-                            <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-xs font-semibold text-slate-500" data-i18n="kpi_avg_title">全校 10% 平均分 · Purata 10%</span>
-                                    <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
-                                        <i data-lucide="trending-up" class="w-4 h-4"></i>
-                                    </div>
-                                </div>
-                                <div class="mt-3 flex items-baseline gap-2">
-                                    <span id="kpi-avg-ten" class="text-3xl font-extrabold text-slate-900">0.00</span>
-                                    <span class="text-xs font-bold text-emerald-700">/ 10.00</span>
-                                </div>
-                                <p id="kpi-avg-gpa-sub" class="text-xs text-slate-500 mt-2">GPA: 0.00</p>
-                            </div>
-
-                            <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-xs font-semibold text-slate-500" data-i18n="kpi_ab_title">优秀率 (A & B) · Kadar Cemerlang</span>
-                                    <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
-                                        <i data-lucide="award" class="w-4 h-4"></i>
-                                    </div>
-                                </div>
-                                <div class="mt-3 flex items-baseline gap-2">
-                                    <span id="kpi-ab-rate" class="text-3xl font-extrabold text-slate-900">0.0%</span>
-                                    <span id="kpi-ab-fraction" class="text-xs text-slate-500">(0/0)</span>
-                                </div>
-                                <p id="kpi-grade-a-count" class="text-xs text-amber-700 font-medium mt-2">Gred A: 0</p>
-                            </div>
-
-                            <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-xs font-semibold text-slate-500" data-i18n="kpi_focus_title">需重点关注 · Perlu Perhatian</span>
-                                    <div class="w-9 h-9 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
-                                        <i data-lucide="alert-triangle" class="w-4 h-4"></i>
-                                    </div>
-                                </div>
-                                <div class="mt-3 flex items-baseline gap-2">
-                                    <span id="kpi-focus-count" class="text-3xl font-extrabold text-rose-700">0</span>
-                                    <span class="text-xs text-slate-500" data-i18n="unit_murid">人 / Murid</span>
-                                </div>
-                                <p class="text-xs text-slate-500 mt-2" data-i18n="kpi_focus_sub">Gred C/D/E atau komponen &lt; 50%</p>
+                                <button onclick="exportSchoolAnalyticsCSV()"
+                                    class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition flex items-center gap-1.5 shrink-0">
+                                    <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+                                    <span data-i18n="btn_export_csv">导出分析报表 CSV · Eksport CSV</span>
+                                </button>
                             </div>
                         </div>
 
-                        <!-- 4 Interactive Chart.js Visualizations -->
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col">
-                                <div class="mb-4">
-                                    <h3 class="text-base font-bold text-slate-900" data-i18n="chart1_title">1. Gred A–E 分布环形图 · Taburan Gred A–E</h3>
-                                    <p class="text-xs text-slate-500" data-i18n="chart1_sub">各等级学生人数与比例 · Peratusan murid mengikut gred</p>
-                                </div>
-                                <div class="relative flex-grow min-h-[250px]">
-                                    <canvas id="chart-grade-doughnut"></canvas>
-                                </div>
-                            </div>
+                        <!-- ================================================= -->
+                        <!-- ANALYTICS MODE 1: GROUP (GPS, GPK & 3 DOMAINS)    -->
+                        <!-- ================================================= -->
+                        <div id="ana-view-group" class="space-y-6">
 
-                            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col">
-                                <div class="mb-4">
-                                    <h3 class="text-base font-bold text-slate-900" data-i18n="chart2_title">2. 各班级 10% 平均分对比 · Purata 10% Mengikut Kelas</h3>
-                                    <p class="text-xs text-slate-500" data-i18n="chart2_sub">按班级对比平均 10% 课外活动得分 · Perbandingan purata kelas</p>
-                                </div>
-                                <div class="relative flex-grow min-h-[250px]">
-                                    <canvas id="chart-class-bar"></canvas>
-                                </div>
-                            </div>
-
-                            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col">
-                                <div class="mb-4">
-                                    <h3 class="text-base font-bold text-slate-900" data-i18n="chart3_title">3. 三大核心项目平均分 (%) · Purata Tiga Elemen Utama</h3>
-                                    <p class="text-xs text-slate-500">Sukan/Permainan vs Kelab/Persatuan vs Badan Beruniform</p>
-                                </div>
-                                <div class="relative flex-grow min-h-[250px]">
-                                    <canvas id="chart-core-bar"></canvas>
-                                </div>
-                            </div>
-
-                            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col">
-                                <div class="mb-4">
-                                    <h3 class="text-base font-bold text-slate-900" data-i18n="chart4_title">4. 热门社团与运动表现排行 (%) · Prestasi Kelab & Sukan</h3>
-                                    <p class="text-xs text-slate-500" data-i18n="chart4_sub">各课外活动项目平均得分排行 · Kedudukan purata markah aktiviti</p>
-                                </div>
-                                <div class="relative flex-grow min-h-[250px]">
-                                    <canvas id="chart-activity-bar"></canvas>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Actionable Focus List -->
-                        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
-                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                                <div class="flex items-center gap-2.5">
-                                    <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center">
-                                        <i data-lucide="clipboard-list" class="w-4 h-4"></i>
+                            <!-- 6 KPI Summary Cards (Including GPS & GPK Highlight) -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+                                <!-- KPI 1: Total Students -->
+                                <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-semibold text-slate-500" data-i18n="kpi_total_title">总评估人数 · Jumlah Murid</span>
+                                        <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
+                                            <i data-lucide="users" class="w-4 h-4"></i>
+                                        </div>
                                     </div>
+                                    <div class="mt-2.5 flex items-baseline gap-1.5">
+                                        <span id="kpi-total-students" class="text-2xl sm:text-3xl font-extrabold text-slate-900">0</span>
+                                        <span class="text-xs text-slate-500" data-i18n="unit_murid">人 / Murid</span>
+                                    </div>
+                                    <p id="kpi-class-list" class="text-[11px] text-blue-700 font-medium mt-1.5 truncate">-</p>
+                                </div>
+
+                                <!-- KPI 2: GPS / Gred Purata Sekolah (Official KPM Formula) -->
+                                <div class="bg-gradient-to-br from-[#0f294a] to-[#1d4ed8] text-white rounded-2xl p-4 border border-blue-800 shadow-sm">
+                                    <div class="flex items-center justify-between">
+                                        <span id="kpi-gps-label" class="text-xs font-semibold text-blue-100">全校平均等级 · GPS</span>
+                                        <div class="w-8 h-8 rounded-xl bg-white/15 text-amber-300 flex items-center justify-center">
+                                            <i data-lucide="gauge" class="w-4 h-4"></i>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2.5 flex items-baseline gap-2">
+                                        <span id="kpi-gps-value" class="text-2xl sm:text-3xl font-extrabold text-white">0.00</span>
+                                        <span class="text-[11px] font-semibold text-emerald-300">(1.00 = Terbaik)</span>
+                                    </div>
+                                    <p id="kpi-gps-sub" class="text-[11px] text-blue-200 mt-1.5 truncate">Gred Purata Sekolah</p>
+                                </div>
+
+                                <!-- KPI 3: Average 10% -->
+                                <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-semibold text-slate-500" data-i18n="kpi_avg_title">10% 平均分 · Purata 10%</span>
+                                        <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                                            <i data-lucide="trending-up" class="w-4 h-4"></i>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2.5 flex items-baseline gap-1.5">
+                                        <span id="kpi-avg-ten" class="text-2xl sm:text-3xl font-extrabold text-slate-900">0.00</span>
+                                        <span class="text-xs font-bold text-emerald-700">/ 10.00</span>
+                                    </div>
+                                    <p id="kpi-avg-gpa-sub" class="text-[11px] text-slate-500 mt-1.5">CGPA: 0.00</p>
+                                </div>
+
+                                <!-- KPI 4: Gred A Excellence Rate -->
+                                <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-semibold text-slate-500" data-i18n="kpi_a_title">特优率 (A) · Peratus Gred A</span>
+                                        <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                                            <i data-lucide="award" class="w-4 h-4"></i>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2.5 flex items-baseline gap-1.5">
+                                        <span id="kpi-a-rate" class="text-2xl sm:text-3xl font-extrabold text-slate-900">0.0%</span>
+                                        <span id="kpi-grade-a-count" class="text-xs text-slate-500">(0)</span>
+                                    </div>
+                                    <p id="kpi-ab-sub" class="text-[11px] text-amber-700 font-medium mt-1.5">A + B: 0.0%</p>
+                                </div>
+
+                                <!-- KPI 5: Overall Pass Rate (A-D) -->
+                                <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-semibold text-slate-500" data-i18n="kpi_pass_title">整体及格率 (A–D) · Peratus Lulus</span>
+                                        <div class="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                                            <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2.5 flex items-baseline gap-1.5">
+                                        <span id="kpi-pass-rate" class="text-2xl sm:text-3xl font-extrabold text-indigo-700">0.0%</span>
+                                        <span id="kpi-pass-fraction" class="text-xs text-slate-500">(0/0)</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-500 mt-1.5">Gred A, B, C, D</p>
+                                </div>
+
+                                <!-- KPI 6: Focus / Intervention Needed -->
+                                <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-semibold text-slate-500" data-i18n="kpi_focus_title">需重点关注 · Perlu Perhatian</span>
+                                        <div class="w-8 h-8 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
+                                            <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2.5 flex items-baseline gap-1.5">
+                                        <span id="kpi-focus-count" class="text-2xl sm:text-3xl font-extrabold text-rose-700">0</span>
+                                        <span class="text-xs text-slate-500" data-i18n="unit_murid">人 / Murid</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-500 mt-1.5 truncate" data-i18n="kpi_focus_sub">Gred C/D/E atau komponen &lt; 50%</p>
+                                </div>
+                            </div>
+
+                            <!-- SECTION A: TOTAL ANALYSIS — GRED PURATA KELAS (GPK) & GRADE DISTRIBUTION -->
+                            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-6">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
                                     <div>
-                                        <h3 class="text-base font-bold text-slate-900" data-i18n="focus_table_title">
-                                            重点关注名单 · Senarai Murid Perlu Perhatian
+                                        <span class="text-[11px] font-bold uppercase tracking-wider text-blue-700">BAHAGIAN A · 总分析</span>
+                                        <h3 class="text-base sm:text-lg font-bold text-slate-900" data-i18n="sec_a_title">
+                                            班级平均等级 (GPK) 与全校等级分布分析 · Analisis Gred Purata Kelas (GPK) & Taburan Gred
                                         </h3>
-                                        <p class="text-xs text-slate-500" data-i18n="focus_table_sub">
-                                            自动筛选 Gred C/D/E 或单项低于 50% 的学生并生成提升建议 · Murid gred C/D/E atau skor komponen rendah
+                                    </div>
+                                    <span class="text-xs text-slate-500 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
+                                        Formula KPM: GP = (1×A + 2×B + 3×C + 4×D + 5×E) ÷ Bil. Murid
+                                    </span>
+                                </div>
+
+                                <!-- Charts Row: GPK by Class + Gred A-E Doughnut -->
+                                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                                    <div class="lg:col-span-2 flex flex-col">
+                                        <h4 class="text-sm font-bold text-slate-800 mb-1" data-i18n="chart_gpk_title">
+                                            各班级 GPK 排名对比 (数值越低越优秀) · Perbandingan GPK Mengikut Kelas
+                                        </h4>
+                                        <p class="text-xs text-slate-500 mb-3" data-i18n="chart_gpk_sub">
+                                            按 GPK 从最优到待提升排序 · Disusun dari GPK terbaik (terendah) ke tertinggi
                                         </p>
+                                        <div class="relative flex-grow min-h-[250px]">
+                                            <canvas id="chart-class-gpk-bar"></canvas>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex flex-col">
+                                        <h4 class="text-sm font-bold text-slate-800 mb-1" data-i18n="chart1_title">
+                                            Gred A–E 分布比例 · Taburan Gred A–E
+                                        </h4>
+                                        <p class="text-xs text-slate-500 mb-3" data-i18n="chart1_sub">
+                                            各等级学生人数与百分比 · Bilangan & peratusan murid mengikut gred
+                                        </p>
+                                        <div class="relative flex-grow min-h-[250px]">
+                                            <canvas id="chart-grade-doughnut"></canvas>
+                                        </div>
                                     </div>
                                 </div>
-                                <span id="focus-count-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200 self-start">
-                                    0
-                                </span>
+
+                                <!-- Full Class GPK Breakdown Table -->
+                                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                                    <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                                        <thead>
+                                            <tr class="bg-slate-50 text-slate-700 border-b border-slate-200">
+                                                <th class="py-3 px-3 font-semibold text-center">#</th>
+                                                <th class="py-3 px-3 font-semibold" data-i18n="th_kelas">班级 · Kelas</th>
+                                                <th class="py-3 px-3 font-semibold" data-i18n="th_tahun">年级 · Tahun</th>
+                                                <th class="py-3 px-3 font-semibold text-center">Bil.</th>
+                                                <th class="py-3 px-2.5 font-semibold text-center text-emerald-700">A</th>
+                                                <th class="py-3 px-2.5 font-semibold text-center text-blue-700">B</th>
+                                                <th class="py-3 px-2.5 font-semibold text-center text-amber-700">C</th>
+                                                <th class="py-3 px-2.5 font-semibold text-center text-orange-700">D</th>
+                                                <th class="py-3 px-2.5 font-semibold text-center text-rose-700">E</th>
+                                                <th class="py-3 px-3 font-semibold text-right">Lulus (%)</th>
+                                                <th class="py-3 px-3 font-semibold text-right">Purata 10%</th>
+                                                <th class="py-3 px-3 font-semibold text-right">Purata CGPA</th>
+                                                <th class="py-3 px-4 font-bold text-right bg-blue-50/70 text-blue-900">GPK</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="class-gpk-tbody" class="divide-y divide-slate-200"></tbody>
+                                    </table>
+                                </div>
                             </div>
 
-                            <div class="overflow-x-auto rounded-xl border border-slate-200">
-                                <table class="w-full text-left border-collapse text-xs sm:text-sm">
-                                    <thead>
-                                        <tr class="bg-slate-50 text-slate-700 border-b border-slate-200">
-                                            <th class="py-3 px-4 font-semibold" data-i18n="th_student_name">学生姓名 · Nama Murid</th>
-                                            <th class="py-3 px-3 font-semibold">No. MyKad</th>
-                                            <th class="py-3 px-3 font-semibold" data-i18n="th_kelas">班级 · Kelas</th>
-                                            <th class="py-3 px-3 font-semibold text-right">10% / Gred</th>
-                                            <th class="py-3 px-3 font-semibold" data-i18n="th_advice">薄弱项目与建议 · Cadangan Penambahbaikan</th>
-                                            <th class="py-3 px-4 font-semibold text-center" data-i18n="th_actions">操作 · Tindakan</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="focus-list-tbody" class="divide-y divide-slate-200"></tbody>
-                                </table>
+                            <!-- SECTION B: 3 CORE DOMAINS SPECIALIZED ANALYSIS (UNIFORM, KELAB, SUKAN) -->
+                            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-6">
+                                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                                    <div>
+                                        <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-700">BAHAGIAN B · 三大核心项目专项分析</span>
+                                        <h3 class="text-base sm:text-lg font-bold text-slate-900" data-i18n="sec_b_title">
+                                            制服团体 · 学会与协会 · 体育与球类运动专项分析 · Analisis Mengikut Bidang Kokurikulum
+                                        </h3>
+                                    </div>
+
+                                    <!-- Domain Filter Pills -->
+                                    <div class="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200 self-start">
+                                        <button type="button" onclick="switchDomainTab('ALL')" data-domain-btn="ALL"
+                                            class="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#0f294a] text-white transition">
+                                            全部三项 · Semua Bidang
+                                        </button>
+                                        <button type="button" onclick="switchDomainTab('UNIFORM')" data-domain-btn="UNIFORM"
+                                            class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition">
+                                            制服团体 · Badan Beruniform
+                                        </button>
+                                        <button type="button" onclick="switchDomainTab('KELAB')" data-domain-btn="KELAB"
+                                            class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition">
+                                            学会 · Kelab/Persatuan
+                                        </button>
+                                        <button type="button" onclick="switchDomainTab('SUKAN')" data-domain-btn="SUKAN"
+                                            class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition">
+                                            球类运动 · Sukan/Permainan
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- 3-Domain Summary Cards & Comparative Chart -->
+                                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+                                    <div class="space-y-3">
+                                        <div class="p-4 rounded-xl bg-emerald-50/70 border border-emerald-200 flex items-center justify-between">
+                                            <div>
+                                                <span class="text-xs font-bold text-emerald-900 block">制服团体 · Badan Beruniform</span>
+                                                <span id="dom-uniform-units" class="text-[11px] text-emerald-700">0 个团体</span>
+                                            </div>
+                                            <span id="dom-uniform-avg" class="text-xl font-extrabold text-emerald-800">0.00%</span>
+                                        </div>
+                                        <div class="p-4 rounded-xl bg-blue-50/70 border border-blue-200 flex items-center justify-between">
+                                            <div>
+                                                <span class="text-xs font-bold text-blue-900 block">学会与协会 · Kelab / Persatuan</span>
+                                                <span id="dom-kelab-units" class="text-[11px] text-blue-700">0 个学会</span>
+                                            </div>
+                                            <span id="dom-kelab-avg" class="text-xl font-extrabold text-blue-800">0.00%</span>
+                                        </div>
+                                        <div class="p-4 rounded-xl bg-amber-50/70 border border-amber-200 flex items-center justify-between">
+                                            <div>
+                                                <span class="text-xs font-bold text-amber-900 block">体育与球类 · Sukan / Permainan</span>
+                                                <span id="dom-sukan-units" class="text-[11px] text-amber-700">0 个项目</span>
+                                            </div>
+                                            <span id="dom-sukan-avg" class="text-xl font-extrabold text-amber-800">0.00%</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="lg:col-span-2 relative min-h-[230px]">
+                                        <canvas id="chart-core-bar"></canvas>
+                                    </div>
+                                </div>
+
+                                <!-- Per-Unit Detailed Breakdown Table -->
+                                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                                    <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                                        <thead>
+                                            <tr class="bg-slate-50 text-slate-700 border-b border-slate-200">
+                                                <th class="py-3 px-3 font-semibold" data-i18n="th_domain">所属类别 · Bidang</th>
+                                                <th class="py-3 px-3 font-semibold" data-i18n="th_unit_name">项目 / 团体名称 · Nama Unit</th>
+                                                <th class="py-3 px-3 font-semibold text-center">Bil. Ahli</th>
+                                                <th class="py-3 px-3 font-semibold text-right">Purata Skor (/110)</th>
+                                                <th class="py-3 px-3 font-semibold text-right">Purata (%)</th>
+                                                <th class="py-3 px-3 font-semibold text-center">A / B / C / D / E</th>
+                                                <th class="py-3 px-3 font-bold text-right">GP Unit</th>
+                                                <th class="py-3 px-4 font-semibold" data-i18n="th_top_student">最高分学生 · Murid Terbaik</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="domain-units-tbody" class="divide-y divide-slate-200"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- SECTION C: FOCUS / INTERVENTION LIST -->
+                            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                    <div class="flex items-center gap-2.5">
+                                        <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center">
+                                            <i data-lucide="clipboard-list" class="w-4 h-4"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-base font-bold text-slate-900" data-i18n="focus_table_title">
+                                                重点关注名单 · Senarai Murid Perlu Perhatian
+                                            </h3>
+                                            <p class="text-xs text-slate-500" data-i18n="focus_table_sub">
+                                                自动筛选 Gred C/D/E 或单项低于 50% 的学生并生成提升建议 · Murid gred C/D/E atau skor komponen rendah
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <span id="focus-count-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200 self-start">
+                                        0
+                                    </span>
+                                </div>
+
+                                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                                    <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                                        <thead>
+                                            <tr class="bg-slate-50 text-slate-700 border-b border-slate-200">
+                                                <th class="py-3 px-4 font-semibold" data-i18n="th_student_name">学生姓名 · Nama Murid</th>
+                                                <th class="py-3 px-3 font-semibold">No. MyKad</th>
+                                                <th class="py-3 px-3 font-semibold" data-i18n="th_kelas">班级 · Kelas</th>
+                                                <th class="py-3 px-3 font-semibold text-right">10% / Gred</th>
+                                                <th class="py-3 px-3 font-semibold" data-i18n="th_advice">薄弱项目与建议 · Cadangan Penambahbaikan</th>
+                                                <th class="py-3 px-4 font-semibold text-center" data-i18n="th_actions">操作 · Tindakan</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="focus-list-tbody" class="divide-y divide-slate-200"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ================================================= -->
+                        <!-- ANALYTICS MODE 2: INDIVIDUAL STUDENT ANALYSIS     -->
+                        <!-- ================================================= -->
+                        <div id="ana-view-individual" class="hidden space-y-6">
+                            <!-- Student Selector Card -->
+                            <div class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm">
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1.5" data-i18n="ind_filter_kelas">
+                                            按班级筛选 · Tapis Mengikut Kelas
+                                        </label>
+                                        <select id="ind-filter-kelas" onchange="populateIndividualStudentOptions()"
+                                            class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600">
+                                            <option value="ALL">全部班级 · Semua Kelas</option>
+                                        </select>
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <label class="block text-xs font-bold text-slate-700 mb-1.5" data-i18n="ind_select_student">
+                                            选择要分析的学生 · Pilih Murid Untuk Analisis Individu
+                                        </label>
+                                        <select id="ind-student-select" onchange="renderIndividualAnalytics()"
+                                            class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600">
+                                            <option value="">-- 请选择学生 / Sila Pilih Murid --</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Individual Analytics Content -->
+                            <div id="ind-analysis-content" class="hidden space-y-6">
+                                <!-- Student Header Banner -->
+                                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                    <div>
+                                        <div class="flex flex-wrap items-center gap-2">
+                                            <span id="ind-kelas-badge" class="px-2.5 py-0.5 rounded-lg bg-blue-50 text-blue-800 border border-blue-200 text-xs font-bold">-</span>
+                                            <span id="ind-mykad-badge" class="text-xs font-mono text-slate-500">-</span>
+                                        </div>
+                                        <h3 id="ind-student-nama" class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1">-</h3>
+                                    </div>
+
+                                    <div class="flex flex-wrap items-center gap-3">
+                                        <div class="px-4 py-2 rounded-xl bg-slate-50 border border-slate-200 text-right">
+                                            <span class="text-[11px] text-slate-500 block">CGPA / GPA</span>
+                                            <span id="ind-cgpa-val" class="text-base font-extrabold text-slate-900">-</span>
+                                        </div>
+                                        <div class="px-4 py-2 rounded-xl bg-blue-50 border border-blue-200 text-right">
+                                            <span class="text-[11px] text-blue-700 font-semibold block">10% / GRED</span>
+                                            <span id="ind-gred-val" class="text-lg font-extrabold text-blue-900">-</span>
+                                        </div>
+                                        <button id="ind-btn-view-pdf"
+                                            class="px-4 py-3 rounded-xl bg-[#0f294a] hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold shadow-sm transition flex items-center gap-2">
+                                            <i data-lucide="file-text" class="w-4 h-4"></i>
+                                            <span data-i18n="ind_btn_pdf">查看原版 PDF · Lihat PDF</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Student vs Class Average vs School Average Comparison Chart -->
+                                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                                    <div class="lg:col-span-2 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col">
+                                        <h4 class="text-base font-bold text-slate-900 mb-1" data-i18n="ind_chart_title">
+                                            个人表现 vs 班级平均 vs 全校平均 (%) · Perbandingan Prestasi Individu
+                                        </h4>
+                                        <p class="text-xs text-slate-500 mb-4" data-i18n="ind_chart_sub">
+                                            直观对比学生在制服团体、学会与球类运动中的优势与提升空间
+                                        </p>
+                                        <div class="relative flex-grow min-h-[270px]">
+                                            <canvas id="chart-individual-compare"></canvas>
+                                        </div>
+                                    </div>
+
+                                    <!-- 4 Component Cards & Official Statement -->
+                                    <div class="space-y-3">
+                                        <div class="bg-white rounded-2xl p-4 border border-emerald-200 shadow-sm">
+                                            <span class="text-[11px] font-bold text-emerald-700 uppercase">Badan Beruniform · 制服团体</span>
+                                            <p id="ind-uniform-nama" class="text-sm font-bold text-slate-900 mt-0.5">-</p>
+                                            <p id="ind-uniform-skor" class="text-base font-extrabold text-emerald-700 mt-1">-</p>
+                                        </div>
+                                        <div class="bg-white rounded-2xl p-4 border border-blue-200 shadow-sm">
+                                            <span class="text-[11px] font-bold text-blue-700 uppercase">Kelab / Persatuan · 学会协会</span>
+                                            <p id="ind-kelab-nama" class="text-sm font-bold text-slate-900 mt-0.5">-</p>
+                                            <p id="ind-kelab-skor" class="text-base font-extrabold text-blue-700 mt-1">-</p>
+                                        </div>
+                                        <div class="bg-white rounded-2xl p-4 border border-amber-200 shadow-sm">
+                                            <span class="text-[11px] font-bold text-amber-700 uppercase">Sukan / Permainan · 体育球类</span>
+                                            <p id="ind-sukan-nama" class="text-sm font-bold text-slate-900 mt-0.5">-</p>
+                                            <p id="ind-sukan-skor" class="text-base font-extrabold text-amber-700 mt-1">-</p>
+                                        </div>
+                                        <div class="bg-white rounded-2xl p-4 border border-indigo-200 shadow-sm flex items-center justify-between">
+                                            <div>
+                                                <span class="text-[11px] font-bold text-indigo-700 uppercase">Ekstra Kurikulum</span>
+                                                <span class="text-xs text-slate-500 block">课外活动额外加分</span>
+                                            </div>
+                                            <span id="ind-ekstra-skor" class="text-xl font-extrabold text-indigo-800">+0</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Official Pernyataan Laporan Card -->
+                                <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+                                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5" data-i18n="el_pernyataan_title">
+                                        官方评估评语 · Pernyataan Laporan
+                                    </h4>
+                                    <p id="ind-pernyataan-text" class="text-xs sm:text-sm text-slate-700 leading-relaxed">-</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -958,16 +1276,40 @@
                     <!-- ===================================================== -->
                     <!-- SECTION C: STUDENT PDF RECORDS REPOSITORY             -->
                     <!-- ===================================================== -->
-                    <div id="admin-sec-records" class="hidden space-y-6">
+                    <div id="admin-sec-records" class="hidden space-y-4">
+
+                        <!-- Sticky Batch Selection Action Bar (Shown when >= 1 checkbox selected) -->
+                        <div id="rec-batch-bar" class="hidden sticky top-16 z-20 bg-[#0f294a] text-white rounded-2xl px-5 py-3.5 shadow-lg border border-blue-800 flex flex-wrap items-center justify-between gap-3">
+                            <div class="flex items-center gap-2.5">
+                                <span class="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center text-xs font-extrabold" id="rec-selected-badge">0</span>
+                                <span id="rec-selected-text" class="text-xs sm:text-sm font-semibold">已选择 0 份学生档案</span>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-2">
+                                <button type="button" onclick="confirmBatchDeleteSelected()"
+                                    class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm font-bold shadow-sm transition flex items-center gap-1.5">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                    <span data-i18n="btn_batch_delete_sel">批量删除选中档案与 PDF · Padam Terpilih</span>
+                                </button>
+                                <button type="button" onclick="clearRecordSelection()"
+                                    class="px-3.5 py-2 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-semibold transition" data-i18n="btn_cancel_sel">
+                                    取消选择 · Batal
+                                </button>
+                            </div>
+                        </div>
+
                         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                             <div class="p-5 border-b border-slate-200 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                                <div class="flex flex-wrap items-center gap-3 flex-grow">
+                                <div class="flex flex-wrap items-center gap-2.5 flex-grow">
                                     <div class="relative flex-grow sm:max-w-xs">
                                         <i data-lucide="search" class="w-3.5 h-3.5 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
                                         <input type="text" id="rec-search-input" oninput="renderStudentRecordsTable()"
                                             placeholder="搜索姓名或 MyKad · Cari Nama / MyKad..."
                                             class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600">
                                     </div>
+                                    <select id="rec-filter-tahun" onchange="renderStudentRecordsTable()"
+                                        class="px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm font-medium text-slate-700">
+                                        <option value="ALL">所有年级 · Semua Tahun</option>
+                                    </select>
                                     <select id="rec-filter-kelas" onchange="renderStudentRecordsTable()"
                                         class="px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm font-medium text-slate-700">
                                         <option value="ALL">所有班级 · Semua Kelas</option>
@@ -983,9 +1325,14 @@
                                     </select>
                                 </div>
 
-                                <div class="flex items-center gap-3">
+                                <div class="flex flex-wrap items-center gap-2.5">
                                     <span id="rec-summary-count" class="text-xs font-semibold text-slate-500">0</span>
-                                    <button onclick="refreshAllAdminData()"
+                                    <button type="button" onclick="confirmBatchDeleteFiltered()"
+                                        class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 transition flex items-center gap-1">
+                                        <i data-lucide="trash" class="w-3.5 h-3.5"></i>
+                                        <span data-i18n="btn_batch_delete_filtered">删除当前筛选全部 · Padam Semua Tapisan</span>
+                                    </button>
+                                    <button onclick="refreshAllAdminData().then(() => { populateRecordsFilters(); renderStudentRecordsTable(); })"
                                         class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center gap-1">
                                         <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
                                         <span data-i18n="btn_refresh">刷新 · Muat Semula</span>
@@ -997,7 +1344,11 @@
                                 <table class="w-full text-left border-collapse">
                                     <thead>
                                         <tr class="bg-slate-50 text-slate-600 text-xs uppercase tracking-wider border-b border-slate-200">
-                                            <th class="py-3.5 px-4 font-semibold" data-i18n="th_student_mykad">学生姓名 / MyKad</th>
+                                            <th class="py-3.5 pl-4 pr-2 w-10">
+                                                <input type="checkbox" id="rec-select-all" onchange="toggleSelectAllRecords(this.checked)"
+                                                    class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
+                                            </th>
+                                            <th class="py-3.5 px-3 font-semibold" data-i18n="th_student_mykad">学生姓名 / MyKad</th>
                                             <th class="py-3.5 px-3 font-semibold" data-i18n="th_kelas">班级 · Kelas</th>
                                             <th class="py-3.5 px-3 font-semibold text-right">Sukan (%)</th>
                                             <th class="py-3.5 px-3 font-semibold text-right">Kelab (%)</th>
@@ -1015,9 +1366,108 @@
                     </div>
 
                     <!-- ===================================================== -->
-                    <!-- SECTION D: SCHOOL SETTINGS & CREST UPLOAD             -->
+                    <!-- SECTION D: SCHOOL SETTINGS, CREST & PORTAL CONTROL    -->
                     <!-- ===================================================== -->
                     <div id="admin-sec-school" class="hidden space-y-6">
+
+                        <!-- Card 1: Parent Portal Access Control & Auto-Close Deadline -->
+                        <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 border border-blue-200 flex items-center justify-center shrink-0">
+                                        <i data-lucide="calendar-clock" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-base sm:text-lg font-bold text-slate-900" data-i18n="portal_ctrl_title">
+                                            家长查询通道开关与自动关闭日期 · Kawalan Akses & Tarikh Tutup Portal
+                                        </h3>
+                                        <p class="text-xs sm:text-sm text-slate-500 mt-0.5" data-i18n="portal_ctrl_desc">
+                                            副校长可随时手动关闭查询通道，或设定截止日期与时间；时间一到，家长端将自动锁定无法查询。
+                                        </p>
+                                    </div>
+                                </div>
+                                <span id="portal-live-status-badge" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 self-start">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                    <span>当前状态：开放查询中</span>
+                                </span>
+                            </div>
+
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <!-- Left: Master Switch & Deadline Picker -->
+                                <div class="space-y-4">
+                                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-4">
+                                        <div>
+                                            <span class="text-sm font-bold text-slate-900 block" data-i18n="portal_switch_label">
+                                                家长查询通道总开关 · Status Portal Ibu Bapa
+                                            </span>
+                                            <span class="text-xs text-slate-500" data-i18n="portal_switch_sub">
+                                                关闭后家长端将立即停止查询服务 · Tutup serta-merta akses semakan ibu bapa
+                                            </span>
+                                        </div>
+                                        <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                                            <input type="checkbox" id="set-portal-enabled" checked onchange="updatePortalControlPreview()" class="sr-only peer">
+                                            <div class="w-12 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                                        </label>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1.5" data-i18n="portal_deadline_label">
+                                            自动关闭截止日期与时间 (选填) · Tarikh & Masa Tutup Automatik
+                                        </label>
+                                        <input type="datetime-local" id="set-portal-deadline" onchange="updatePortalControlPreview()"
+                                            class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600">
+                                        <div class="flex flex-wrap items-center gap-1.5 mt-2">
+                                            <button type="button" onclick="applyDeadlinePreset(7)"
+                                                class="px-2.5 py-1 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 text-xs font-semibold transition">
+                                                +7 天 / Hari
+                                            </button>
+                                            <button type="button" onclick="applyDeadlinePreset(14)"
+                                                class="px-2.5 py-1 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 text-xs font-semibold transition">
+                                                +14 天 / Hari
+                                            </button>
+                                            <button type="button" onclick="applyDeadlinePreset(30)"
+                                                class="px-2.5 py-1 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 text-xs font-semibold transition">
+                                                +30 天 / Hari
+                                            </button>
+                                            <button type="button" onclick="applyDeadlinePreset(null)"
+                                                class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-semibold transition">
+                                                不设截止时间 · Tiada Had
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Right: Custom Bilingual Closure Message -->
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1.5" data-i18n="portal_msg_zh_label">
+                                            通道关闭时家长端显示提示语 (华文) · Mesej Penutupan (Bahasa Cina)
+                                        </label>
+                                        <textarea id="set-portal-msg-zh" rows="2"
+                                            placeholder="本学年 PAJSK 线上查询通道已关闭。如有疑问，请联系学校课外活动副校长（PK Kokurikulum）。"
+                                            class="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600"></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1.5" data-i18n="portal_msg_bm_label">
+                                            通道关闭时家长端显示提示语 (马来文) · Mesej Penutupan (Bahasa Melayu)
+                                        </label>
+                                        <textarea id="set-portal-msg-bm" rows="2"
+                                            placeholder="Tempoh semakan dalam talian keputusan PAJSK telah ditutup. Sila hubungi PK Kokurikulum sekolah untuk sebarang pertanyaan."
+                                            class="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-3 border-t border-slate-100 flex justify-end">
+                                <button type="button" onclick="handleSaveSchoolSettings(event)"
+                                    class="px-5 py-2.5 bg-[#0f294a] hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold rounded-xl shadow-sm transition flex items-center gap-2">
+                                    <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+                                    <span data-i18n="btn_save_portal_ctrl">保存查询通道设置 · Simpan Tetapan Portal</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Card 2: School Crest & Official School Profile -->
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                             <!-- Left Column: School Crest Upload & Live Preview -->
                             <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between space-y-5">
@@ -1186,17 +1636,16 @@
                                 第二步：在 Supabase SQL Editor 执行以下完整建表脚本
                             </h4>
                             <p class="text-xs text-slate-500">
-                                自动创建 <code class="text-slate-700">school_settings</code>、<code class="text-slate-700">pajsk_records</code> 数据表、RLS 策略及 <code class="text-slate-700">pajsk-pdfs</code> 存储桶
+                                包含 <code class="bg-slate-100 px-1 rounded">school_settings</code>（含查询通道开关/截止日期）、<code class="bg-slate-100 px-1 rounded">pajsk_records</code> 与 <code class="bg-slate-100 px-1 rounded">pajsk-pdfs</code> 存储桶策略
                             </p>
                         </div>
                         <button type="button" onclick="copySupabaseSetupSQL()"
-                            class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl shadow-sm transition flex items-center gap-1.5 shrink-0 self-start">
+                            class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-sm transition flex items-center gap-1.5 shrink-0">
                             <i data-lucide="copy" class="w-3.5 h-3.5"></i>
                             <span data-i18n="btn_copy_sql">一键复制完整 SQL · Salin Skrip SQL</span>
                         </button>
                     </div>
-
-                    <pre id="supabase-setup-sql-code" class="bg-slate-900 text-emerald-300 p-4 rounded-xl text-[11px] sm:text-xs font-mono overflow-x-auto max-h-64 leading-relaxed select-all">-- 1. 创建学校资料与校徽配置表 (public.school_settings)
+                    <pre id="supabase-setup-sql-code" class="bg-slate-900 text-emerald-300 p-4 rounded-xl text-[11px] sm:text-xs font-mono overflow-x-auto max-h-64 leading-relaxed select-all">-- 1. 创建学校资料、校徽与家长查询通道控制表 (public.school_settings)
 CREATE TABLE IF NOT EXISTS public.school_settings (
     id INTEGER PRIMARY KEY DEFAULT 1 CHECK (id = 1),
     school_name_zh TEXT NOT NULL DEFAULT '中华小学',
@@ -1205,11 +1654,21 @@ CREATE TABLE IF NOT EXISTS public.school_settings (
     sesi_akademik TEXT NOT NULL DEFAULT '2025/2026',
     logo_url TEXT DEFAULT '',
     logo_path TEXT DEFAULT '',
+    portal_enabled BOOLEAN NOT NULL DEFAULT true,
+    portal_deadline TIMESTAMPTZ DEFAULT NULL,
+    portal_closed_msg_zh TEXT DEFAULT '本学年 PAJSK 线上查询通道已关闭。如有疑问，请联系学校课外活动副校长（PK Kokurikulum）。',
+    portal_closed_msg_bm TEXT DEFAULT 'Tempoh semakan dalam talian keputusan PAJSK telah ditutup. Sila hubungi PK Kokurikulum sekolah untuk sebarang pertanyaan.',
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-INSERT INTO public.school_settings (id, school_name_zh, school_name_bm, kod_sekolah, sesi_akademik)
-VALUES (1, '中华小学', 'SEKOLAH JENIS KEBANGSAAN (CINA) CHUNG HUA RANTAU', 'NBC4067', '2025/2026')
+-- 兼容已建旧表：自动补充查询通道控制字段
+ALTER TABLE public.school_settings ADD COLUMN IF NOT EXISTS portal_enabled BOOLEAN NOT NULL DEFAULT true;
+ALTER TABLE public.school_settings ADD COLUMN IF NOT EXISTS portal_deadline TIMESTAMPTZ DEFAULT NULL;
+ALTER TABLE public.school_settings ADD COLUMN IF NOT EXISTS portal_closed_msg_zh TEXT DEFAULT '本学年 PAJSK 线上查询通道已关闭。如有疑问，请联系学校课外活动副校长（PK Kokurikulum）。';
+ALTER TABLE public.school_settings ADD COLUMN IF NOT EXISTS portal_closed_msg_bm TEXT DEFAULT 'Tempoh semakan dalam talian keputusan PAJSK telah ditutup. Sila hubungi PK Kokurikulum sekolah untuk sebarang pertanyaan.';
+
+INSERT INTO public.school_settings (id, school_name_zh, school_name_bm, kod_sekolah, sesi_akademik, portal_enabled)
+VALUES (1, '中华小学', 'SEKOLAH JENIS KEBANGSAAN (CINA) CHUNG HUA RANTAU', 'NBC4067', '2025/2026', true)
 ON CONFLICT (id) DO NOTHING;
 
 ALTER TABLE public.school_settings ENABLE ROW LEVEL SECURITY;
@@ -1453,10 +1912,17 @@ CREATE POLICY "Authenticated delete for pajsk-pdfs"
             kod_sekolah: "NBC4067",
             sesi_akademik: "2025/2026",
             logo_url: "",
-            logo_path: ""
+            logo_path: "",
+            portal_enabled: true,
+            portal_deadline: null,
+            portal_closed_msg_zh: "本学年 PAJSK 线上查询通道已关闭。如有疑问，请联系学校课外活动副校长（PK Kokurikulum）。",
+            portal_closed_msg_bm: "Tempoh semakan dalam talian keputusan PAJSK telah ditutup. Sila hubungi PK Kokurikulum sekolah untuk sebarang pertanyaan."
         };
 
         let cachedAdminRecords = [];
+        let selectedRecordMyKads = new Set();
+        let activeAnalyticsMode = "group";
+        let activeDomainTab = "ALL";
         let activeParentRecord = null;
         let activeParentPdfBuffer = null;
         let parentZoomLevel = 1.0;
@@ -2040,6 +2506,161 @@ CREATE POLICY "Authenticated delete for pajsk-pdfs"
                 bilingual: "确认 · Sahkan",
                 zh: "确认执行",
                 bm: "Sahkan"
+            },
+            portal_closed_badge: {
+                bilingual: "查询通道已关闭 · Portal Semakan Ditutup",
+                zh: "查询通道已关闭",
+                bm: "Portal Semakan Ditutup"
+            },
+            portal_closed_title: {
+                bilingual: "PAJSK 成绩在线查询时段已结束 · Tempoh Semakan Keputusan PAJSK Telah Tamat",
+                zh: "PAJSK 成绩在线查询时段已结束",
+                bm: "Tempoh Semakan Keputusan PAJSK Telah Tamat"
+            },
+            parent_deadline_prefix: {
+                bilingual: "线上查询截止时间 · Tarikh Tutup Semakan:",
+                zh: "本次线上查询截止时间:",
+                bm: "Tarikh & Masa Tutup Semakan:"
+            },
+            ana_mode_group: {
+                bilingual: "总分析与专项分析 · Analisis Keseluruhan & Bidang",
+                zh: "全校总分析与三大项目专项分析",
+                bm: "Analisis Keseluruhan, Kelas & Bidang"
+            },
+            ana_mode_individual: {
+                bilingual: "个人深度分析 · Analisis Individu",
+                zh: "学生个人深度对比分析",
+                bm: "Analisis Prestasi Individu Murid"
+            },
+            kpi_a_title: {
+                bilingual: "特优率 (A) · Peratus Gred A",
+                zh: "特优率 (Gred A)",
+                bm: "Peratus Cemerlang (Gred A)"
+            },
+            kpi_pass_title: {
+                bilingual: "整体及格率 (A–D) · Peratus Lulus",
+                zh: "整体及格率 (A–D)",
+                bm: "Peratus Lulus (Gred A–D)"
+            },
+            sec_a_title: {
+                bilingual: "班级平均等级 (GPK) 与全校等级分布分析 · Analisis Gred Purata Kelas (GPK) & Taburan Gred",
+                zh: "总分析：班级平均等级 (GPK) 与全校等级分布",
+                bm: "Bahagian A: Analisis Gred Purata Kelas (GPK) & Taburan Gred"
+            },
+            chart_gpk_title: {
+                bilingual: "各班级 GPK 排名对比 (数值越低越优秀) · Perbandingan GPK Mengikut Kelas",
+                zh: "各班级 GPK 排名对比 (数值越低越优秀)",
+                bm: "Perbandingan Gred Purata Kelas (GPK - Lebih Rendah Lebih Baik)"
+            },
+            chart_gpk_sub: {
+                bilingual: "按 GPK 从最优到待提升排序 · Disusun dari GPK terbaik (terendah) ke tertinggi",
+                zh: "按 GPK 从最优到待提升排序",
+                bm: "Disusun mengikut GPK terbaik (terendah) ke tertinggi"
+            },
+            th_tahun: {
+                bilingual: "年级 · Tahun",
+                zh: "年级",
+                bm: "Tahun"
+            },
+            sec_b_title: {
+                bilingual: "制服团体 · 学会与协会 · 体育与球类运动专项分析 · Analisis Mengikut Bidang Kokurikulum",
+                zh: "专项分析：制服团体 · 学会与协会 · 体育与球类运动",
+                bm: "Bahagian B: Analisis Mengikut Bidang (Beruniform, Kelab & Sukan)"
+            },
+            th_domain: {
+                bilingual: "所属类别 · Bidang",
+                zh: "所属项目类别",
+                bm: "Bidang Kokurikulum"
+            },
+            th_unit_name: {
+                bilingual: "项目 / 团体名称 · Nama Unit",
+                zh: "团体 / 社团 / 运动项目名称",
+                bm: "Nama Unit / Kelab / Sukan"
+            },
+            th_top_student: {
+                bilingual: "最高分学生 · Murid Terbaik",
+                zh: "最高分学生",
+                bm: "Murid Terbaik Unit"
+            },
+            ind_filter_kelas: {
+                bilingual: "按班级筛选 · Tapis Mengikut Kelas",
+                zh: "按班级筛选学生",
+                bm: "Tapis Mengikut Kelas"
+            },
+            ind_select_student: {
+                bilingual: "选择要分析的学生 · Pilih Murid Untuk Analisis Individu",
+                zh: "选择要进行个人深度分析的学生",
+                bm: "Pilih Murid Untuk Analisis Individu"
+            },
+            ind_btn_pdf: {
+                bilingual: "查看原版 PDF · Lihat PDF",
+                zh: "查看原版官方 PDF",
+                bm: "Lihat Pelaporan PDF"
+            },
+            ind_chart_title: {
+                bilingual: "个人表现 vs 班级平均 vs 全校平均 (%) · Perbandingan Prestasi Individu",
+                zh: "个人各项得分 vs 班级平均 vs 全校平均 (%)",
+                bm: "Perbandingan Prestasi Individu vs Purata Kelas vs Purata Sekolah (%)"
+            },
+            ind_chart_sub: {
+                bilingual: "直观对比学生在制服团体、学会与球类运动中的优势与提升空间",
+                zh: "直观对比学生在制服团体、学会与球类运动中的优势与提升空间",
+                bm: "Bandingkan pencapaian murid dalam setiap komponen berbanding purata kelas dan sekolah"
+            },
+            btn_batch_delete_sel: {
+                bilingual: "批量删除选中档案与 PDF · Padam Terpilih",
+                zh: "批量删除选中档案与云端 PDF",
+                bm: "Padam Rekod & Fail PDF Terpilih"
+            },
+            btn_cancel_sel: {
+                bilingual: "取消选择 · Batal",
+                zh: "取消选择",
+                bm: "Batal Pilihan"
+            },
+            btn_batch_delete_filtered: {
+                bilingual: "删除当前筛选全部 · Padam Semua Tapisan",
+                zh: "删除当前筛选全部",
+                bm: "Padam Semua Tapisan"
+            },
+            portal_ctrl_title: {
+                bilingual: "家长查询通道开关与自动关闭日期 · Kawalan Akses & Tarikh Tutup Portal",
+                zh: "家长查询通道开关与自动关闭日期设置",
+                bm: "Kawalan Akses & Tarikh Tutup Automatik Portal Ibu Bapa"
+            },
+            portal_ctrl_desc: {
+                bilingual: "副校长可随时手动关闭查询通道，或设定截止日期与时间；时间一到，家长端将自动锁定无法查询。",
+                zh: "副校长可随时手动关闭查询通道，或设定截止日期与时间；时间一到，家长端将自动锁定无法查询。",
+                bm: "PK Kokurikulum boleh menutup portal secara manual atau menetapkan tarikh & masa tutup automatik."
+            },
+            portal_switch_label: {
+                bilingual: "家长查询通道总开关 · Status Portal Ibu Bapa",
+                zh: "家长查询通道总开关",
+                bm: "Suis Utama Portal Semakan Ibu Bapa"
+            },
+            portal_switch_sub: {
+                bilingual: "关闭后家长端将立即停止查询服务 · Tutup serta-merta akses semakan ibu bapa",
+                zh: "关闭后家长端将立即停止查询服务",
+                bm: "Jika dimatikan, ibu bapa tidak lagi boleh membuat semakan keputusan"
+            },
+            portal_deadline_label: {
+                bilingual: "自动关闭截止日期与时间 (选填) · Tarikh & Masa Tutup Automatik",
+                zh: "自动关闭截止日期与时间 (选填，留空则不设限)",
+                bm: "Tarikh & Masa Tutup Automatik (Pilihan)"
+            },
+            portal_msg_zh_label: {
+                bilingual: "通道关闭时家长端显示提示语 (华文) · Mesej Penutupan (Bahasa Cina)",
+                zh: "通道关闭时家长端显示提示语 (华文)",
+                bm: "Mesej Penutupan Portal (Bahasa Cina)"
+            },
+            portal_msg_bm_label: {
+                bilingual: "通道关闭时家长端显示提示语 (马来文) · Mesej Penutupan (Bahasa Melayu)",
+                zh: "通道关闭时家长端显示提示语 (马来文)",
+                bm: "Mesej Penutupan Portal (Bahasa Melayu)"
+            },
+            btn_save_portal_ctrl: {
+                bilingual: "保存查询通道设置 · Simpan Tetapan Portal",
+                zh: "保存查询通道设置",
+                bm: "Simpan Tetapan Portal"
             }
         };
 
@@ -2079,30 +2700,21 @@ CREATE POLICY "Authenticated delete for pajsk-pdfs"
 
             // Update dynamic admin section title
             updateAdminSectionHeaderTitle();
-            updateCloudStatusIndicators();
-            applySchoolBrandingToUI();
-
-            if (!document.getElementById("admin-sec-analytics").classList.contains("hidden")) {
-                renderAdminAnalytics();
-            }
-            if (!document.getElementById("admin-sec-records").classList.contains("hidden")) {
-                renderStudentRecordsTable();
-            }
         }
 
         // =====================================================================
-        // 3. SUPABASE INITIALIZATION & ZERO-CONFIG SHARING
+        // 3. SUPABASE CLIENT INITIALIZATION & ACCESS CONTROL HELPERS
         // =====================================================================
-        function readSupabaseParamsFromLocation() {
+        function initSupabaseClient() {
             const searchParams = new URLSearchParams(window.location.search);
             let urlParam = searchParams.get("sb_url");
             let keyParam = searchParams.get("sb_key");
 
             const hash = window.location.hash || "";
             if ((!urlParam || !keyParam) && hash.includes("?")) {
-                const hashQuery = new URLSearchParams(hash.split("?")[1]);
-                urlParam = urlParam || hashQuery.get("sb_url");
-                keyParam = keyParam || hashQuery.get("sb_key");
+                const hashParams = new URLSearchParams(hash.split("?")[1]);
+                urlParam = urlParam || hashParams.get("sb_url");
+                keyParam = keyParam || hashParams.get("sb_key");
             }
 
             if (urlParam && keyParam) {
@@ -2110,34 +2722,14 @@ CREATE POLICY "Authenticated delete for pajsk-pdfs"
                 localStorage.setItem(LS_SB_ANON_KEY, keyParam.trim());
             }
 
-            const finalUrl = (urlParam || localStorage.getItem(LS_SB_URL_KEY) || DEFAULT_SUPABASE_URL).trim();
-            const finalKey = (keyParam || localStorage.getItem(LS_SB_ANON_KEY) || DEFAULT_SUPABASE_ANON_KEY).trim();
+            currentSbUrl = (localStorage.getItem(LS_SB_URL_KEY) || DEFAULT_SUPABASE_URL || "").trim();
+            currentSbKey = (localStorage.getItem(LS_SB_ANON_KEY) || DEFAULT_SUPABASE_ANON_KEY || "").trim();
 
-            return { url: finalUrl, key: finalKey };
-        }
-
-        function initSupabaseClient() {
-            const { url, key } = readSupabaseParamsFromLocation();
-            currentSbUrl = url;
-            currentSbKey = key;
-
-            if (url && key && window.supabase) {
+            if (currentSbUrl && currentSbKey && window.supabase) {
                 try {
-                    supabaseClient = window.supabase.createClient(url, key);
-                    supabaseClient.auth.onAuthStateChange((event, session) => {
-                        if (event === "PASSWORD_RECOVERY" && session) {
-                            currentAdminUser = session.user;
-                            navigateTo("#/pk-admin");
-                            openChangePasswordModal();
-                            showToast("请设置您的新登录密码 / Sila tetapkan kata laluan baharu", "info");
-                        } else if (event === "SIGNED_OUT") {
-                            currentAdminUser = null;
-                            document.getElementById("admin-workspace").classList.add("hidden");
-                            document.getElementById("admin-auth-screen").classList.remove("hidden");
-                        }
-                    });
+                    supabaseClient = window.supabase.createClient(currentSbUrl, currentSbKey);
                 } catch (err) {
-                    console.error("Supabase init failed:", err);
+                    console.error("Failed to create Supabase client:", err);
                     supabaseClient = null;
                 }
             } else {
@@ -2147,26 +2739,94 @@ CREATE POLICY "Authenticated delete for pajsk-pdfs"
             updateCloudStatusIndicators();
         }
 
+        function isParentPortalCurrentlyOpen() {
+            if (schoolSettings.portal_enabled === false) {
+                return { open: false, reason: "manual" };
+            }
+            if (schoolSettings.portal_deadline) {
+                const deadlineDate = new Date(schoolSettings.portal_deadline);
+                if (!Number.isNaN(deadlineDate.getTime()) && new Date() >= deadlineDate) {
+                    return { open: false, reason: "expired", deadline: deadlineDate };
+                }
+                return { open: true, deadline: deadlineDate };
+            }
+            return { open: true, deadline: null };
+        }
+
+        function formatReadableDateTime(dateObj) {
+            if (!dateObj || Number.isNaN(dateObj.getTime())) return "-";
+            return dateObj.toLocaleString("zh-CN", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false
+            });
+        }
+
+        function toDateTimeLocalInputValue(isoString) {
+            if (!isoString) return "";
+            const d = new Date(isoString);
+            if (Number.isNaN(d.getTime())) return "";
+            const pad = (n) => String(n).padStart(2, "0");
+            return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+        }
+
         function updateCloudStatusIndicators() {
             const isCloudConfigured = Boolean(supabaseClient);
 
-            // Parent Page: Show search card ONLY when connected; otherwise show guided notice
+            // Parent Page: Check cloud config + portal access status (manual switch & deadline)
             const unconfNotice = document.getElementById("parent-unconfigured-notice");
+            const closedNotice = document.getElementById("parent-closed-notice");
             const searchCard = document.getElementById("parent-search-card");
             const emptyState = document.getElementById("parent-empty-state");
             const resultSec = document.getElementById("parent-result-section");
 
-            if (isCloudConfigured) {
-                unconfNotice.classList.add("hidden");
-                searchCard.classList.remove("hidden");
-                if (!activeParentRecord) {
-                    emptyState.classList.remove("hidden");
-                }
-            } else {
+            if (!isCloudConfigured) {
                 unconfNotice.classList.remove("hidden");
+                closedNotice.classList.add("hidden");
                 searchCard.classList.add("hidden");
                 emptyState.classList.add("hidden");
                 resultSec.classList.add("hidden");
+            } else {
+                unconfNotice.classList.add("hidden");
+                const access = isParentPortalCurrentlyOpen();
+
+                if (!access.open) {
+                    closedNotice.classList.remove("hidden");
+                    searchCard.classList.add("hidden");
+                    emptyState.classList.add("hidden");
+                    resultSec.classList.add("hidden");
+
+                    document.getElementById("parent-closed-msg-zh").textContent =
+                        schoolSettings.portal_closed_msg_zh || "本学年 PAJSK 线上查询通道已关闭。如有疑问，请联系学校课外活动副校长（PK Kokurikulum）。";
+                    document.getElementById("parent-closed-msg-bm").textContent =
+                        schoolSettings.portal_closed_msg_bm || "Tempoh semakan dalam talian keputusan PAJSK telah ditutup. Sila hubungi PK Kokurikulum sekolah untuk sebarang pertanyaan.";
+
+                    const dlPill = document.getElementById("parent-closed-deadline-pill");
+                    if (access.deadline) {
+                        dlPill.classList.remove("hidden");
+                        document.getElementById("parent-closed-deadline-text").textContent =
+                            `截止时间 / Tarikh Tutup: ${formatReadableDateTime(access.deadline)}`;
+                    } else {
+                        dlPill.classList.add("hidden");
+                    }
+                } else {
+                    closedNotice.classList.add("hidden");
+                    searchCard.classList.remove("hidden");
+                    if (!activeParentRecord) {
+                        emptyState.classList.remove("hidden");
+                    }
+
+                    const dlBanner = document.getElementById("parent-deadline-banner");
+                    if (access.deadline) {
+                        dlBanner.classList.remove("hidden");
+                        document.getElementById("parent-deadline-value").textContent = formatReadableDateTime(access.deadline);
+                    } else {
+                        dlBanner.classList.add("hidden");
+                    }
+                }
             }
 
             // Admin Login Cloud Badge & Auto-Show Setup Card if unconfigured
@@ -2378,6 +3038,59 @@ CREATE POLICY "Authenticated delete for pajsk-pdfs"
                     ? "已上传自定义校徽 · Lencana Rasmi Aktif"
                     : t("crest_status_default");
             }
+
+            // Sync Portal Access Control Inputs
+            const enabledInput = document.getElementById("set-portal-enabled");
+            const deadlineInput = document.getElementById("set-portal-deadline");
+            const msgZhInput = document.getElementById("set-portal-msg-zh");
+            const msgBmInput = document.getElementById("set-portal-msg-bm");
+
+            if (enabledInput) enabledInput.checked = schoolSettings.portal_enabled !== false;
+            if (deadlineInput) deadlineInput.value = toDateTimeLocalInputValue(schoolSettings.portal_deadline);
+            if (msgZhInput) msgZhInput.value = schoolSettings.portal_closed_msg_zh || "";
+            if (msgBmInput) msgBmInput.value = schoolSettings.portal_closed_msg_bm || "";
+
+            updatePortalControlPreview();
+            updateCloudStatusIndicators();
+        }
+
+        function updatePortalControlPreview() {
+            const badge = document.getElementById("portal-live-status-badge");
+            const enabledEl = document.getElementById("set-portal-enabled");
+            const deadlineEl = document.getElementById("set-portal-deadline");
+            if (!badge || !enabledEl) return;
+
+            const isEnabled = enabledEl.checked;
+            const dlVal = deadlineEl?.value;
+
+            if (!isEnabled) {
+                badge.className = "inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-rose-50 text-rose-800 border border-rose-200 self-start";
+                badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-500"></span><span>已手动关闭 · Ditutup Secara Manual</span>`;
+            } else if (dlVal && new Date() >= new Date(dlVal)) {
+                badge.className = "inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200 self-start";
+                badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-500"></span><span>已过截止时间自动关闭 · Ditutup Automatik</span>`;
+            } else if (dlVal) {
+                badge.className = "inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 self-start";
+                badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span><span>开放中 (截止: ${formatReadableDateTime(new Date(dlVal))})</span>`;
+            } else {
+                badge.className = "inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 self-start";
+                badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span><span>开放查询中 · Portal Dibuka</span>`;
+            }
+        }
+
+        function applyDeadlinePreset(daysToAdd) {
+            const input = document.getElementById("set-portal-deadline");
+            if (!input) return;
+
+            if (daysToAdd === null) {
+                input.value = "";
+            } else {
+                const target = new Date();
+                target.setDate(target.getDate() + daysToAdd);
+                target.setHours(23, 59, 0, 0);
+                input.value = toDateTimeLocalInputValue(target.toISOString());
+            }
+            updatePortalControlPreview();
         }
 
         function resizeImageToTransparentPngBlob(file, maxSize = 256) {
@@ -2517,24 +3230,31 @@ CREATE POLICY "Authenticated delete for pajsk-pdfs"
         }
 
         async function handleSaveSchoolSettings(e) {
-            e.preventDefault();
+            if (e) e.preventDefault();
             if (!supabaseClient) {
                 showToast("请先连接 Supabase 云端 / Sila sambungkan Supabase dahulu", "error");
                 return;
             }
 
             const btn = document.getElementById("btn-save-school-settings");
-            btn.disabled = true;
+            if (btn) btn.disabled = true;
 
             try {
+                const rawDeadline = document.getElementById("set-portal-deadline")?.value || "";
+                const deadlineIso = rawDeadline ? new Date(rawDeadline).toISOString() : null;
+
                 const payload = {
                     id: 1,
-                    school_name_zh: document.getElementById("set-school-zh").value.trim(),
-                    school_name_bm: document.getElementById("set-school-bm").value.trim().toUpperCase(),
-                    kod_sekolah: document.getElementById("set-school-code").value.trim().toUpperCase(),
-                    sesi_akademik: document.getElementById("set-school-sesi").value.trim(),
+                    school_name_zh: document.getElementById("set-school-zh").value.trim() || schoolSettings.school_name_zh,
+                    school_name_bm: document.getElementById("set-school-bm").value.trim().toUpperCase() || schoolSettings.school_name_bm,
+                    kod_sekolah: document.getElementById("set-school-code").value.trim().toUpperCase() || schoolSettings.kod_sekolah,
+                    sesi_akademik: document.getElementById("set-school-sesi").value.trim() || schoolSettings.sesi_akademik,
                     logo_url: schoolSettings.logo_url || "",
                     logo_path: schoolSettings.logo_path || "",
+                    portal_enabled: document.getElementById("set-portal-enabled")?.checked !== false,
+                    portal_deadline: deadlineIso,
+                    portal_closed_msg_zh: document.getElementById("set-portal-msg-zh")?.value.trim() || schoolSettings.portal_closed_msg_zh,
+                    portal_closed_msg_bm: document.getElementById("set-portal-msg-bm")?.value.trim() || schoolSettings.portal_closed_msg_bm,
                     updated_at: new Date().toISOString()
                 };
 
@@ -2547,11 +3267,11 @@ CREATE POLICY "Authenticated delete for pajsk-pdfs"
 
                 schoolSettings = saved;
                 applySchoolBrandingToUI();
-                showToast("学校资料已保存并同步至家长端！ / Tetapan sekolah berjaya disimpan!", "success");
+                showToast("设置已保存并实时同步至家长端！ / Tetapan berjaya disimpan!", "success");
             } catch (err) {
                 showToast(`保存失败: ${err.message}`, "error");
             } finally {
-                btn.disabled = false;
+                if (btn) btn.disabled = false;
             }
         }
 
@@ -3166,6 +3886,14 @@ CREATE POLICY "Authenticated delete for pajsk-pdfs"
                 return;
             }
 
+            await loadSchoolSettings();
+            const access = isParentPortalCurrentlyOpen();
+            if (!access.open) {
+                updateCloudStatusIndicators();
+                showToast("家长查询通道已关闭 / Portal semakan telah ditutup", "error");
+                return;
+            }
+
             const clean = normalizeMyKad(rawInput);
             if (!clean) {
                 showToast("请输入孩子的 12 位身份证号码 / Sila masukkan 12 digit No. MyKad", "error");
@@ -3280,171 +4008,270 @@ CREATE POLICY "Authenticated delete for pajsk-pdfs"
         }
 
         // =====================================================================
-        // 12. ADMIN WORKSPACE NAVIGATION & MULTI-PDF BATCH UPLOAD
+        // 12. ADMIN NAVIGATION, DATA REFRESH & BATCH PDF UPLOAD
         // =====================================================================
         function updateAdminSectionHeaderTitle() {
+            const titleEl = document.getElementById("admin-section-title");
+            if (!titleEl) return;
+
             const titleMap = {
-                upload: t("nav_upload"),
-                analytics: t("nav_analytics"),
-                records: t("nav_records"),
-                school: t("nav_school")
+                upload: {
+                    bilingual: "批量上传官方 PAJSK PDF 成绩单 · Muat Naik Pelaporan PDF",
+                    zh: "批量上传官方 PAJSK PDF 成绩单",
+                    bm: "Muat Naik Berkelompok Fail PDF Pelaporan PAJSK"
+                },
+                analytics: {
+                    bilingual: "全校成绩全景分析 (GPS / GPK / 三大项目 / 个人) · Analisis Prestasi PAJSK",
+                    zh: "全校成绩全景分析 (GPS / GPK / 三大核心项目 / 个人对比)",
+                    bm: "Analisis Prestasi PAJSK (GPS, GPK, Bidang & Individu)"
+                },
+                records: {
+                    bilingual: "学生 PDF 档案名册与批量管理 · Rekod & Fail PDF Murid",
+                    zh: "学生 PDF 档案名册与批量管理",
+                    bm: "Pengurusan Rekod & Fail PDF Murid"
+                },
+                school: {
+                    bilingual: "学校资料、校徽与家长查询通道控制 · Tetapan Sekolah & Kawalan Portal",
+                    zh: "学校资料、校徽与家长查询通道控制",
+                    bm: "Tetapan Sekolah, Lencana & Kawalan Akses Portal"
+                }
             };
-            const el = document.getElementById("admin-section-title");
-            if (el) el.textContent = titleMap[activeAdminSection] || "";
+
+            const entry = titleMap[activeAdminSection] || titleMap.upload;
+            titleEl.textContent = entry[currentLang] || entry.bilingual;
         }
 
-        async function refreshAllAdminData() {
-            try {
-                cachedAdminRecords = await fetchAllRecords();
-                document.getElementById("sidebar-db-count").textContent = `${cachedAdminRecords.length}`;
-            } catch (err) {
-                console.error("Failed to fetch admin records:", err);
-                showToast(`加载云端记录失败 / Gagal memuatkan rekod: ${err.message}`, "error");
-            }
-        }
+        async function switchAdminSection(sectionName) {
+            activeAdminSection = sectionName;
 
-        async function switchAdminSection(section) {
-            activeAdminSection = section;
-            const sections = ["upload", "analytics", "records", "school"];
-            updateAdminSectionHeaderTitle();
-
-            sections.forEach(sec => {
-                const el = document.getElementById(`admin-sec-${sec}`);
+            ["upload", "analytics", "records", "school"].forEach(sec => {
                 const btn = document.getElementById(`side-btn-${sec}`);
-                if (sec === section) {
-                    el.classList.remove("hidden");
-                    btn.className = "flex-1 lg:flex-initial flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold transition bg-blue-600 text-white shadow-sm whitespace-nowrap";
-                } else {
-                    el.classList.add("hidden");
-                    btn.className = "flex-1 lg:flex-initial flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold transition text-blue-200 hover:bg-white/10 hover:text-white whitespace-nowrap";
+                const panel = document.getElementById(`admin-sec-${sec}`);
+                if (btn) {
+                    btn.className = sec === sectionName
+                        ? "flex-1 lg:flex-initial flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold transition bg-blue-600 text-white shadow-sm whitespace-nowrap"
+                        : "flex-1 lg:flex-initial flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold transition text-blue-200 hover:bg-white/10 hover:text-white whitespace-nowrap";
+                }
+                if (panel) {
+                    if (sec === sectionName) panel.classList.remove("hidden");
+                    else panel.classList.add("hidden");
                 }
             });
 
-            if (section === "analytics") {
+            updateAdminSectionHeaderTitle();
+
+            if (sectionName === "analytics") {
                 populateAnalyticsFilters();
+                populateIndividualFilterClasses();
+                populateIndividualStudentOptions();
                 renderAdminAnalytics();
-            } else if (section === "records") {
+            } else if (sectionName === "records") {
                 populateRecordsFilters();
                 renderStudentRecordsTable();
-            } else if (section === "school") {
+            } else if (sectionName === "school") {
                 applySchoolBrandingToUI();
+            }
+
+            refreshLucideIcons();
+        }
+
+        async function refreshAllAdminData() {
+            if (!supabaseClient) return;
+            try {
+                cachedAdminRecords = await fetchAllRecords();
+                const countEl = document.getElementById("sidebar-db-count");
+                if (countEl) countEl.textContent = `${cachedAdminRecords.length}`;
+
+                populateAnalyticsFilters();
+                populateRecordsFilters();
+                populateIndividualFilterClasses();
+
+                if (activeAdminSection === "analytics") {
+                    renderAdminAnalytics();
+                } else if (activeAdminSection === "records") {
+                    renderStudentRecordsTable();
+                }
+            } catch (err) {
+                console.error("Failed to fetch admin records:", err);
+                showToast(`读取云端数据失败: ${err.message}`, "error");
+            }
+        }
+
+        function initAdminDropzone() {
+            const dz = document.getElementById("pdf-dropzone");
+            if (!dz) return;
+
+            ["dragenter", "dragover"].forEach(evtName => {
+                dz.addEventListener(evtName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dz.classList.add("border-blue-600", "bg-blue-100/60");
+                });
+            });
+
+            ["dragleave", "drop"].forEach(evtName => {
+                dz.addEventListener(evtName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dz.classList.remove("border-blue-600", "bg-blue-100/60");
+                });
+            });
+
+            dz.addEventListener("drop", (e) => {
+                const files = e.dataTransfer?.files;
+                if (files && files.length > 0) {
+                    handleBatchPdfUpload(files);
+                }
+            });
+        }
+
+        async function handleBatchPdfUpload(fileList) {
+            if (!supabaseClient) {
+                showToast("请先连接 Supabase 云端 / Sila sambungkan Supabase dahulu", "error");
+                return;
+            }
+
+            const pdfFiles = Array.from(fileList || []).filter(f =>
+                f.type === "application/pdf" || f.name.toLowerCase().endsWith(".pdf")
+            );
+
+            if (pdfFiles.length === 0) {
+                showToast("请选择有效的 PDF 文件 / Sila pilih fail PDF yang sah", "error");
+                return;
+            }
+
+            const progWrap = document.getElementById("upload-progress-wrap");
+            const progBar = document.getElementById("upload-progress-bar");
+            const progLabel = document.getElementById("upload-progress-label");
+            const progPct = document.getElementById("upload-progress-pct");
+            const logTbody = document.getElementById("upload-queue-tbody");
+
+            progWrap.classList.remove("hidden");
+            logTbody.innerHTML = "";
+
+            let successCount = 0;
+
+            for (let i = 0; i < pdfFiles.length; i++) {
+                const file = pdfFiles[i];
+                const pct = Math.round(((i) / pdfFiles.length) * 100);
+                progBar.style.width = `${pct}%`;
+                progPct.textContent = `${pct}%`;
+                progLabel.textContent = `正在处理 (${i + 1}/${pdfFiles.length}): ${file.name}`;
+
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td class="py-3 px-4 font-mono text-xs text-slate-700 truncate max-w-[180px]">${escapeHTML(file.name)}</td>
+                    <td class="py-3 px-3 text-slate-400">解析中...</td>
+                    <td class="py-3 px-3 font-mono text-slate-400">-</td>
+                    <td class="py-3 px-3 text-slate-400">-</td>
+                    <td class="py-3 px-3 text-right text-slate-400">-</td>
+                    <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 text-xs font-semibold">处理中 · Memproses</span></td>
+                    <td class="py-3 px-4 text-center">-</td>
+                `;
+                logTbody.prepend(row);
+
+                try {
+                    const parsed = await parseMOEISSPBBPdfFile(file);
+                    const saved = await saveStudentRecordWithPdf(parsed.record, parsed.arrayBuffer);
+                    successCount++;
+
+                    row.innerHTML = `
+                        <td class="py-3 px-4 font-mono text-xs text-slate-700 truncate max-w-[180px]">${escapeHTML(file.name)}</td>
+                        <td class="py-3 px-3 font-bold text-slate-900">${escapeHTML(saved.nama)}</td>
+                        <td class="py-3 px-3 font-mono text-slate-600">${escapeHTML(saved.mykad)}</td>
+                        <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-slate-100 text-xs font-semibold">${escapeHTML(saved.kelas)}</span></td>
+                        <td class="py-3 px-3 text-right font-extrabold text-blue-700">${Number(saved.markah_10_peratus || 0).toFixed(2)} / ${saved.gred}</td>
+                        <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold">成功 · Berjaya</span></td>
+                        <td class="py-3 px-4 text-center">
+                            <button onclick="openAdminPdfModal('${escapeHTML(saved.mykad)}')"
+                                class="px-2.5 py-1 rounded-lg bg-blue-50 hover:bg-blue-700 text-blue-700 hover:text-white text-xs font-semibold transition">
+                                PDF
+                            </button>
+                        </td>
+                    `;
+                } catch (err) {
+                    console.error(`Failed processing ${file.name}:`, err);
+                    row.innerHTML = `
+                        <td class="py-3 px-4 font-mono text-xs text-slate-700 truncate max-w-[180px]">${escapeHTML(file.name)}</td>
+                        <td colspan="4" class="py-3 px-3 text-xs text-rose-600 font-medium">${escapeHTML(err.message)}</td>
+                        <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200 text-xs font-bold">失败 · Gagal</span></td>
+                        <td class="py-3 px-4 text-center">-</td>
+                    `;
+                }
+            }
+
+            progBar.style.width = "100%";
+            progPct.textContent = "100%";
+            progLabel.textContent = `处理完成：成功 ${successCount} / ${pdfFiles.length} 份 · Selesai (${successCount}/${pdfFiles.length})`;
+
+            await refreshAllAdminData();
+            refreshLucideIcons();
+
+            if (successCount > 0) {
+                showToast(`成功上传并同步 ${successCount} 份官方 PAJSK PDF 成绩单！ / ${successCount} fail PDF berjaya dimuat naik!`, "success");
+            }
+        }
+
+        // =====================================================================
+        // 13. ADMIN SECTION B: ALL-IN-ONE PAJSK ANALYTICS (GPS, GPK, 3 DOMAINS & INDIVIDUAL)
+        // =====================================================================
+        function switchAnalyticsMode(mode) {
+            activeAnalyticsMode = mode;
+            const btnGroup = document.getElementById("ana-mode-btn-group");
+            const btnInd = document.getElementById("ana-mode-btn-individual");
+            const viewGroup = document.getElementById("ana-view-group");
+            const viewInd = document.getElementById("ana-view-individual");
+            const groupFilters = document.getElementById("ana-group-filters");
+
+            if (mode === "group") {
+                btnGroup.className = "px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-[#0f294a] text-white shadow-xs transition flex items-center gap-1.5";
+                btnInd.className = "px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5";
+                viewGroup.classList.remove("hidden");
+                viewInd.classList.add("hidden");
+                groupFilters.classList.remove("hidden");
+                renderAdminAnalytics();
+            } else {
+                btnInd.className = "px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-[#0f294a] text-white shadow-xs transition flex items-center gap-1.5";
+                btnGroup.className = "px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5";
+                viewGroup.classList.add("hidden");
+                viewInd.classList.remove("hidden");
+                groupFilters.classList.add("hidden");
+                populateIndividualFilterClasses();
+                populateIndividualStudentOptions();
             }
             refreshLucideIcons();
         }
 
-        function initAdminDropzone() {
-            const dz = document.getElementById("admin-pdf-dropzone");
-            if (!dz) return;
-
-            ["dragenter", "dragover", "dragleave", "drop"].forEach(ev => {
-                dz.addEventListener(ev, e => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                });
+        function switchDomainTab(domainKey) {
+            activeDomainTab = domainKey;
+            document.querySelectorAll("[data-domain-btn]").forEach(btn => {
+                const key = btn.getAttribute("data-domain-btn");
+                btn.className = key === domainKey
+                    ? "px-3 py-1.5 rounded-lg text-xs font-bold bg-[#0f294a] text-white transition"
+                    : "px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition";
             });
-
-            ["dragenter", "dragover"].forEach(ev => {
-                dz.addEventListener(ev, () => dz.classList.add("border-blue-600", "bg-blue-100/70"));
-            });
-
-            ["dragleave", "drop"].forEach(ev => {
-                dz.addEventListener(ev, () => dz.classList.remove("border-blue-600", "bg-blue-100/70"));
-            });
-
-            dz.addEventListener("drop", e => {
-                const pdfFiles = Array.from(e.dataTransfer.files || []).filter(
-                    f => f.type === "application/pdf" || f.name.toLowerCase().endsWith(".pdf")
-                );
-                if (pdfFiles.length === 0) {
-                    showToast("请拖入有效的 .pdf 格式文件 / Sila pilih fail .pdf yang sah", "error");
-                    return;
-                }
-                processUploadedPdfBatch(pdfFiles);
-            });
+            renderAdminAnalytics();
         }
 
-        function handleAdminFileSelect(e) {
-            const files = Array.from(e.target.files || []);
-            if (files.length > 0) {
-                processUploadedPdfBatch(files);
-                e.target.value = "";
-            }
+        function calculateKpmGredPurata(records) {
+            if (!records || records.length === 0) return 0;
+            const weights = { A: 1, B: 2, C: 3, D: 4, E: 5 };
+            let totalPoints = 0;
+            records.forEach(r => {
+                const g = (r.gred || "E").toUpperCase();
+                totalPoints += (weights[g] || 5);
+            });
+            return Number((totalPoints / records.length).toFixed(2));
         }
 
-        async function processUploadedPdfBatch(files) {
-            const progBox = document.getElementById("admin-upload-progress");
-            const progLabel = document.getElementById("admin-progress-label");
-            const progPct = document.getElementById("admin-progress-pct");
-            const progBar = document.getElementById("admin-progress-bar");
-            const logBody = document.getElementById("admin-upload-log-body");
-
-            progBox.classList.remove("hidden");
-            if (logBody.querySelector('td[colspan="7"]')) {
-                logBody.innerHTML = "";
-            }
-
-            let okCount = 0;
-
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                const pct = Math.round(((i + 1) / files.length) * 100);
-                progLabel.textContent = `(${i + 1}/${files.length}) ${file.name}`;
-                progPct.textContent = `${pct}%`;
-                progBar.style.width = `${pct}%`;
-
-                try {
-                    const { record, arrayBuffer } = await parseMOEISSPBBPdfFile(file);
-                    const saved = await saveStudentRecordWithPdf(record, arrayBuffer);
-                    okCount++;
-
-                    const tr = document.createElement("tr");
-                    tr.className = "hover:bg-slate-50";
-                    tr.innerHTML = `
-                        <td class="py-3 px-4 font-medium text-slate-900">${escapeHTML(file.name)}</td>
-                        <td class="py-3 px-3 font-mono font-semibold text-slate-700">${escapeHTML(saved.mykad)}</td>
-                        <td class="py-3 px-3 font-bold text-slate-900">${escapeHTML(saved.nama)}</td>
-                        <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-slate-100 text-xs font-semibold">${escapeHTML(saved.kelas)}</span></td>
-                        <td class="py-3 px-3 text-right font-extrabold text-blue-700">${Number(saved.markah_10_peratus).toFixed(2)} / ${saved.gred}</td>
-                        <td class="py-3 px-3 text-center">
-                            <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
-                                已同步 · Berjaya
-                            </span>
-                        </td>
-                        <td class="py-3 px-4 text-center">
-                            <div class="inline-flex items-center gap-1.5">
-                                <button onclick="openAdminPdfModal('${escapeHTML(saved.mykad)}')"
-                                    class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-800 hover:text-white text-slate-700 text-xs font-semibold transition">
-                                    PDF
-                                </button>
-                                <button onclick="openParentPortalNewWindow('${escapeHTML(saved.mykad)}')"
-                                    class="px-2.5 py-1 rounded-lg bg-blue-50 hover:bg-blue-700 hover:text-white text-blue-700 text-xs font-semibold transition">
-                                    Portal
-                                </button>
-                            </div>
-                        </td>
-                    `;
-                    logBody.prepend(tr);
-                } catch (err) {
-                    console.error("Upload failed:", file.name, err);
-                    const tr = document.createElement("tr");
-                    tr.className = "bg-rose-50/60";
-                    tr.innerHTML = `
-                        <td class="py-3 px-4 font-medium text-rose-900">${escapeHTML(file.name)}</td>
-                        <td colspan="4" class="py-3 px-3 text-xs text-rose-700">${escapeHTML(err.message)}</td>
-                        <td class="py-3 px-3 text-center"><span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-800">Gagal</span></td>
-                        <td class="py-3 px-4 text-center">-</td>
-                    `;
-                    logBody.prepend(tr);
-                }
-            }
-
-            await refreshAllAdminData();
-            showToast(`批量上传完成！成功同步 ${okCount} 份官方 PDF / ${okCount} fail berjaya dimuat naik`, "success");
+        function getGradeFromPercentage(pct) {
+            if (pct >= 80) return "A";
+            if (pct >= 60) return "B";
+            if (pct >= 40) return "C";
+            if (pct >= 20) return "D";
+            return "E";
         }
 
-        // =====================================================================
-        // 13. ADMIN SECTION B: SCHOOL-WIDE ANALYTICS DASHBOARD
-        // =====================================================================
         function populateAnalyticsFilters() {
             const tahunSel = document.getElementById("ana-filter-tahun");
             const kelasSel = document.getElementById("ana-filter-kelas");
@@ -3455,7 +4282,7 @@ CREATE POLICY "Authenticated delete for pajsk-pdfs"
             const curT = tahunSel.value;
             const curK = kelasSel.value;
 
-            tahunSel.innerHTML = `<option value="ALL">全部年级 · Semua Tahun</option>` +
+            tahunSel.innerHTML = `<option value="ALL">全校所有年级 · Semua Tahun</option>` +
                 tahuns.map(tVal => `<option value="${escapeHTML(tVal)}">${escapeHTML(tVal)}</option>`).join("");
             kelasSel.innerHTML = `<option value="ALL">全部班级 · Semua Kelas</option>` +
                 kelases.map(k => `<option value="${escapeHTML(k)}">${escapeHTML(k)}</option>`).join("");
@@ -3478,6 +4305,11 @@ CREATE POLICY "Authenticated delete for pajsk-pdfs"
         }
 
         function renderAdminAnalytics() {
+            if (activeAnalyticsMode === "individual") {
+                renderIndividualAnalytics();
+                return;
+            }
+
             const selT = document.getElementById("ana-filter-tahun").value;
             const selK = document.getElementById("ana-filter-kelas").value;
 
@@ -3487,16 +4319,35 @@ CREATE POLICY "Authenticated delete for pajsk-pdfs"
                 return okT && okK;
             });
 
+            // Dynamic GPS Label based on scope (Whole School vs Grade Level vs Class)
+            const gpsLabelEl = document.getElementById("kpi-gps-label");
+            const gpsSubEl = document.getElementById("kpi-gps-sub");
+            if (selK !== "ALL") {
+                gpsLabelEl.textContent = `班级平均等级 · GPK (${selK})`;
+                gpsSubEl.textContent = "Gred Purata Kelas";
+            } else if (selT !== "ALL") {
+                gpsLabelEl.textContent = `年级平均等级 · GP (${selT})`;
+                gpsSubEl.textContent = "Gred Purata Tahun";
+            } else {
+                gpsLabelEl.textContent = "全校平均等级 · GPS";
+                gpsSubEl.textContent = "Gred Purata Sekolah";
+            }
+
             const total = list.length;
             if (total === 0) {
                 document.getElementById("kpi-total-students").textContent = "0";
                 document.getElementById("kpi-class-list").textContent = "-";
+                document.getElementById("kpi-gps-value").textContent = "0.00";
                 document.getElementById("kpi-avg-ten").textContent = "0.00";
-                document.getElementById("kpi-avg-gpa-sub").textContent = "GPA: 0.00";
-                document.getElementById("kpi-ab-rate").textContent = "0.0%";
-                document.getElementById("kpi-ab-fraction").textContent = "(0/0)";
-                document.getElementById("kpi-grade-a-count").textContent = "Gred A: 0";
+                document.getElementById("kpi-avg-gpa-sub").textContent = "CGPA: 0.00";
+                document.getElementById("kpi-a-rate").textContent = "0.0%";
+                document.getElementById("kpi-grade-a-count").textContent = "(0)";
+                document.getElementById("kpi-ab-sub").textContent = "A + B: 0.0%";
+                document.getElementById("kpi-pass-rate").textContent = "0.0%";
+                document.getElementById("kpi-pass-fraction").textContent = "(0/0)";
                 document.getElementById("kpi-focus-count").textContent = "0";
+                document.getElementById("class-gpk-tbody").innerHTML = `<tr><td colspan="13" class="py-8 text-center text-slate-400">暂无数据 · Tiada data</td></tr>`;
+                document.getElementById("domain-units-tbody").innerHTML = `<tr><td colspan="8" class="py-8 text-center text-slate-400">暂无数据 · Tiada data</td></tr>`;
                 document.getElementById("focus-count-badge").textContent = "0";
                 document.getElementById("focus-list-tbody").innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-400">暂无数据 · Tiada data</td></tr>`;
                 Object.values(adminCharts).forEach(ch => ch && ch.destroy());
@@ -3504,6 +4355,7 @@ CREATE POLICY "Authenticated delete for pajsk-pdfs"
             }
 
             const classes = [...new Set(list.map(s => s.kelas))].sort();
+            const gpsVal = calculateKpmGredPurata(list);
             const avgTen = list.reduce((sum, s) => sum + Number(s.markah_10_peratus || 0), 0) / total;
             const avgGpa = list.reduce((sum, s) => sum + Number(s.gpa || 0), 0) / total;
 
@@ -3512,8 +4364,10 @@ CREATE POLICY "Authenticated delete for pajsk-pdfs"
                 if (gradeCounts[s.gred] !== undefined) gradeCounts[s.gred]++;
             });
 
-            const abCount = gradeCounts.A + gradeCounts.B;
-            const abRate = ((abCount / total) * 100).toFixed(1);
+            const aRate = ((gradeCounts.A / total) * 100).toFixed(1);
+            const abRate = (((gradeCounts.A + gradeCounts.B) / total) * 100).toFixed(1);
+            const passCount = gradeCounts.A + gradeCounts.B + gradeCounts.C + gradeCounts.D;
+            const passRate = ((passCount / total) * 100).toFixed(1);
 
             const focusStudents = list.filter(s => {
                 const lowGrade = ["C", "D", "E"].includes(s.gred);
@@ -3521,51 +4375,158 @@ CREATE POLICY "Authenticated delete for pajsk-pdfs"
                 return lowGrade || lowComp;
             });
 
+            // Update 6 KPI Cards
             document.getElementById("kpi-total-students").textContent = total;
             document.getElementById("kpi-class-list").textContent = `Kelas: ${classes.join(", ")}`;
+            document.getElementById("kpi-gps-value").textContent = gpsVal.toFixed(2);
             document.getElementById("kpi-avg-ten").textContent = avgTen.toFixed(2);
-            document.getElementById("kpi-avg-gpa-sub").textContent = `Purata GPA: ${avgGpa.toFixed(2)}`;
-            document.getElementById("kpi-ab-rate").textContent = `${abRate}%`;
-            document.getElementById("kpi-ab-fraction").textContent = `(${abCount}/${total})`;
-            document.getElementById("kpi-grade-a-count").textContent = `Gred A: ${gradeCounts.A}`;
+            document.getElementById("kpi-avg-gpa-sub").textContent = `Purata CGPA: ${avgGpa.toFixed(2)}`;
+            document.getElementById("kpi-a-rate").textContent = `${aRate}%`;
+            document.getElementById("kpi-grade-a-count").textContent = `(${gradeCounts.A}/${total})`;
+            document.getElementById("kpi-ab-sub").textContent = `Gred A + B: ${abRate}%`;
+            document.getElementById("kpi-pass-rate").textContent = `${passRate}%`;
+            document.getElementById("kpi-pass-fraction").textContent = `(${passCount}/${total})`;
             document.getElementById("kpi-focus-count").textContent = focusStudents.length;
 
+            // Compute GPK (Gred Purata Kelas) Table & Chart Data
             const classStats = classes.map(cls => {
                 const sub = list.filter(s => s.kelas === cls);
+                const gCounts = { A: 0, B: 0, C: 0, D: 0, E: 0 };
+                sub.forEach(s => { if (gCounts[s.gred] !== undefined) gCounts[s.gred]++; });
+                const gpk = calculateKpmGredPurata(sub);
                 const meanTen = sub.reduce((sum, s) => sum + Number(s.markah_10_peratus || 0), 0) / sub.length;
-                return { kelas: cls, avgTen: Number(meanTen.toFixed(2)), count: sub.length };
-            });
+                const meanCgpa = sub.reduce((sum, s) => sum + Number(s.gpa || 0), 0) / sub.length;
+                const clsPass = (((gCounts.A + gCounts.B + gCounts.C + gCounts.D) / sub.length) * 100).toFixed(1);
+                return {
+                    kelas: cls,
+                    tahun: sub[0]?.tahun || "-",
+                    count: sub.length,
+                    gCounts,
+                    passPct: clsPass,
+                    avgTen: Number(meanTen.toFixed(2)),
+                    avgCgpa: Number(meanCgpa.toFixed(2)),
+                    gpk
+                };
+            }).sort((a, b) => a.gpk - b.gpk); // Lower GPK = Better
 
-            const avgSukan = Number((list.reduce((sum, s) => sum + Number(s.sukan_peratus || 0), 0) / total).toFixed(2));
-            const avgKelab = Number((list.reduce((sum, s) => sum + Number(s.kelab_peratus || 0), 0) / total).toFixed(2));
+            // Render Class GPK Table
+            document.getElementById("class-gpk-tbody").innerHTML = classStats.map((c, idx) => `
+                <tr class="hover:bg-blue-50/40 transition">
+                    <td class="py-3 px-3 text-center font-bold text-slate-500">${idx + 1}</td>
+                    <td class="py-3 px-3 font-extrabold text-slate-900">${escapeHTML(c.kelas)}</td>
+                    <td class="py-3 px-3 text-xs text-slate-600">${escapeHTML(c.tahun)}</td>
+                    <td class="py-3 px-3 text-center font-semibold">${c.count}</td>
+                    <td class="py-3 px-2.5 text-center font-bold text-emerald-700">${c.gCounts.A}</td>
+                    <td class="py-3 px-2.5 text-center font-bold text-blue-700">${c.gCounts.B}</td>
+                    <td class="py-3 px-2.5 text-center font-bold text-amber-700">${c.gCounts.C}</td>
+                    <td class="py-3 px-2.5 text-center font-bold text-orange-700">${c.gCounts.D}</td>
+                    <td class="py-3 px-2.5 text-center font-bold text-rose-700">${c.gCounts.E}</td>
+                    <td class="py-3 px-3 text-right font-semibold text-slate-700">${c.passPct}%</td>
+                    <td class="py-3 px-3 text-right font-semibold text-slate-800">${c.avgTen.toFixed(2)}</td>
+                    <td class="py-3 px-3 text-right text-slate-600">${c.avgCgpa.toFixed(2)}</td>
+                    <td class="py-3 px-4 text-right bg-blue-50/50">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-lg text-xs font-extrabold ${c.gpk <= 2.0 ? "bg-emerald-100 text-emerald-800" : c.gpk <= 3.0 ? "bg-blue-100 text-blue-800" : "bg-amber-100 text-amber-800"}">
+                            ${c.gpk.toFixed(2)}
+                        </span>
+                    </td>
+                </tr>
+            `).join("");
+
+            // Compute 3 Core Domain Averages & Per-Unit Breakdown
             const avgUniform = Number((list.reduce((sum, s) => sum + Number(s.uniform_peratus || 0), 0) / total).toFixed(2));
+            const avgKelab = Number((list.reduce((sum, s) => sum + Number(s.kelab_peratus || 0), 0) / total).toFixed(2));
+            const avgSukan = Number((list.reduce((sum, s) => sum + Number(s.sukan_peratus || 0), 0) / total).toFixed(2));
 
-            const actMap = {};
-            list.forEach(s => {
-                [
-                    { nama: s.sukan_nama, pct: s.sukan_peratus },
-                    { nama: s.kelab_nama, pct: s.kelab_peratus },
-                    { nama: s.uniform_nama, pct: s.uniform_peratus }
-                ].forEach(c => {
-                    if (c.nama && c.nama !== "-") {
-                        const key = c.nama.toUpperCase();
-                        if (!actMap[key]) actMap[key] = { sum: 0, count: 0 };
-                        actMap[key].sum += Number(c.pct || 0);
-                        actMap[key].count += 1;
+            const buildDomainUnits = (domainType) => {
+                const map = {};
+                list.forEach(s => {
+                    const rawName = domainType === "UNIFORM" ? s.uniform_nama : domainType === "KELAB" ? s.kelab_nama : s.sukan_nama;
+                    const rawSkor = Number(domainType === "UNIFORM" ? s.uniform_skor : domainType === "KELAB" ? s.kelab_skor : s.sukan_skor) || 0;
+                    const rawPct = Number(domainType === "UNIFORM" ? s.uniform_peratus : domainType === "KELAB" ? s.kelab_peratus : s.sukan_peratus) || 0;
+
+                    if (!rawName || rawName === "-") return;
+                    const key = rawName.trim().toUpperCase();
+                    if (!map[key]) {
+                        map[key] = {
+                            domain: domainType,
+                            name: rawName.trim(),
+                            members: []
+                        };
                     }
+                    map[key].members.push({
+                        nama: s.nama,
+                        kelas: s.kelas,
+                        skor: rawSkor,
+                        pct: rawPct,
+                        gred: getGradeFromPercentage(rawPct)
+                    });
                 });
-            });
 
-            const activityStats = Object.entries(actMap)
-                .map(([name, info]) => ({
-                    label: `${name.length > 22 ? name.slice(0, 20) + "…" : name} (${info.count})`,
-                    avg: Number((info.sum / info.count).toFixed(2))
-                }))
-                .sort((a, b) => b.avg - a.avg)
-                .slice(0, 7);
+                return Object.values(map).map(u => {
+                    const count = u.members.length;
+                    const avgSkor = u.members.reduce((sum, m) => sum + m.skor, 0) / count;
+                    const avgPct = u.members.reduce((sum, m) => sum + m.pct, 0) / count;
+                    const gCounts = { A: 0, B: 0, C: 0, D: 0, E: 0 };
+                    u.members.forEach(m => gCounts[m.gred]++);
+                    const gpUnit = calculateKpmGredPurata(u.members);
+                    const topMember = [...u.members].sort((a, b) => b.pct - a.pct)[0];
+                    return {
+                        domain: u.domain,
+                        name: u.name,
+                        count,
+                        avgSkor: Number(avgSkor.toFixed(1)),
+                        avgPct: Number(avgPct.toFixed(2)),
+                        gCounts,
+                        gpUnit,
+                        topMember
+                    };
+                }).sort((a, b) => b.avgPct - a.avgPct);
+            };
 
-            drawAdminCharts(gradeCounts, classStats, { avgSukan, avgKelab, avgUniform }, activityStats);
+            const uniformUnits = buildDomainUnits("UNIFORM");
+            const kelabUnits = buildDomainUnits("KELAB");
+            const sukanUnits = buildDomainUnits("SUKAN");
 
+            document.getElementById("dom-uniform-units").textContent = `${uniformUnits.length} 个团体 / Unit`;
+            document.getElementById("dom-uniform-avg").textContent = `${avgUniform.toFixed(2)}%`;
+            document.getElementById("dom-kelab-units").textContent = `${kelabUnits.length} 个学会 / Unit`;
+            document.getElementById("dom-kelab-avg").textContent = `${avgKelab.toFixed(2)}%`;
+            document.getElementById("dom-sukan-units").textContent = `${sukanUnits.length} 个项目 / Unit`;
+            document.getElementById("dom-sukan-avg").textContent = `${avgSukan.toFixed(2)}%`;
+
+            let displayedUnits = [];
+            if (activeDomainTab === "UNIFORM") displayedUnits = uniformUnits;
+            else if (activeDomainTab === "KELAB") displayedUnits = kelabUnits;
+            else if (activeDomainTab === "SUKAN") displayedUnits = sukanUnits;
+            else displayedUnits = [...uniformUnits, ...kelabUnits, ...sukanUnits].sort((a, b) => b.avgPct - a.avgPct);
+
+            const domainBadgeMap = {
+                UNIFORM: `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-100 text-emerald-800">制服 · Beruniform</span>`,
+                KELAB: `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-blue-100 text-blue-800">学会 · Kelab</span>`,
+                SUKAN: `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-100 text-amber-800">球类 · Sukan</span>`
+            };
+
+            document.getElementById("domain-units-tbody").innerHTML = displayedUnits.length === 0
+                ? `<tr><td colspan="8" class="py-8 text-center text-slate-400">暂无项目数据 · Tiada data unit</td></tr>`
+                : displayedUnits.map(u => `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="py-3 px-3 whitespace-nowrap">${domainBadgeMap[u.domain]}</td>
+                        <td class="py-3 px-3 font-bold text-slate-900">${escapeHTML(u.name)}</td>
+                        <td class="py-3 px-3 text-center font-semibold">${u.count}</td>
+                        <td class="py-3 px-3 text-right text-slate-700">${u.avgSkor.toFixed(1)}</td>
+                        <td class="py-3 px-3 text-right font-extrabold text-blue-700">${u.avgPct.toFixed(2)}%</td>
+                        <td class="py-3 px-3 text-center text-xs font-mono text-slate-600">${u.gCounts.A} / ${u.gCounts.B} / ${u.gCounts.C} / ${u.gCounts.D} / ${u.gCounts.E}</td>
+                        <td class="py-3 px-3 text-right font-extrabold text-slate-900">${u.gpUnit.toFixed(2)}</td>
+                        <td class="py-3 px-4 text-xs text-slate-700">
+                            <span class="font-bold text-slate-900">${escapeHTML(u.topMember?.nama || "-")}</span>
+                            <span class="text-emerald-700 font-semibold ml-1">(${u.topMember ? u.topMember.pct.toFixed(1) + "%" : "-"})</span>
+                        </td>
+                    </tr>
+                `).join("");
+
+            drawAdminCharts(gradeCounts, classStats, { avgUniform, avgKelab, avgSukan });
+
+            // Render Focus List Table
             document.getElementById("focus-count-badge").textContent = `${focusStudents.length}`;
             const focusTbody = document.getElementById("focus-list-tbody");
 
@@ -3606,13 +4567,38 @@ CREATE POLICY "Authenticated delete for pajsk-pdfs"
             }
         }
 
-        function drawAdminCharts(gradeCounts, classStats, coreStats, activityStats) {
-            Object.values(adminCharts).forEach(ch => ch && ch.destroy());
+        function drawAdminCharts(gradeCounts, classStats, coreStats) {
+            if (adminCharts.doughnut) adminCharts.doughnut.destroy();
+            if (adminCharts.gpkBar) adminCharts.gpkBar.destroy();
+            if (adminCharts.coreBar) adminCharts.coreBar.destroy();
+
+            adminCharts.gpkBar = new Chart(document.getElementById("chart-class-gpk-bar").getContext("2d"), {
+                type: "bar",
+                data: {
+                    labels: classStats.map(c => `${c.kelas} (${c.count})`),
+                    datasets: [{
+                        label: "GPK (Gred Purata Kelas)",
+                        data: classStats.map(c => c.gpk),
+                        backgroundColor: classStats.map(c => c.gpk <= 2.0 ? "#059669" : c.gpk <= 3.0 ? "#1d4ed8" : "#d97706"),
+                        borderRadius: 8,
+                        maxBarThickness: 44
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, max: 5, grid: { color: "#f1f5f9" } },
+                        x: { grid: { display: false } }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
 
             adminCharts.doughnut = new Chart(document.getElementById("chart-grade-doughnut").getContext("2d"), {
                 type: "doughnut",
                 data: {
-                    labels: ["Gred A (8.0-10.0)", "Gred B (6.0-7.9)", "Gred C (4.0-5.9)", "Gred D (2.0-3.9)", "Gred E (0-1.9)"],
+                    labels: ["Gred A", "Gred B", "Gred C", "Gred D", "Gred E"],
                     datasets: [{
                         data: [gradeCounts.A, gradeCounts.B, gradeCounts.C, gradeCounts.D, gradeCounts.E],
                         backgroundColor: ["#059669", "#1d4ed8", "#d97706", "#f97316", "#dc2626"],
@@ -3623,44 +4609,21 @@ CREATE POLICY "Authenticated delete for pajsk-pdfs"
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    cutout: "62%",
+                    cutout: "60%",
                     plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 11 } } } }
-                }
-            });
-
-            adminCharts.classBar = new Chart(document.getElementById("chart-class-bar").getContext("2d"), {
-                type: "bar",
-                data: {
-                    labels: classStats.map(c => `${c.kelas} (${c.count})`),
-                    datasets: [{
-                        label: "Purata 10%",
-                        data: classStats.map(c => c.avgTen),
-                        backgroundColor: "#1d4ed8",
-                        borderRadius: 8,
-                        maxBarThickness: 42
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: { beginAtZero: true, max: 10, grid: { color: "#f1f5f9" } },
-                        x: { grid: { display: false } }
-                    },
-                    plugins: { legend: { display: false } }
                 }
             });
 
             adminCharts.coreBar = new Chart(document.getElementById("chart-core-bar").getContext("2d"), {
                 type: "bar",
                 data: {
-                    labels: ["Sukan / Permainan", "Kelab / Persatuan", "Badan Beruniform"],
+                    labels: ["制服团体 · Badan Beruniform", "学会协会 · Kelab/Persatuan", "体育球类 · Sukan/Permainan"],
                     datasets: [{
                         label: "Purata (%)",
-                        data: [coreStats.avgSukan, coreStats.avgKelab, coreStats.avgUniform],
-                        backgroundColor: ["#d97706", "#1d4ed8", "#059669"],
+                        data: [coreStats.avgUniform, coreStats.avgKelab, coreStats.avgSukan],
+                        backgroundColor: ["#059669", "#1d4ed8", "#d97706"],
                         borderRadius: 8,
-                        maxBarThickness: 54
+                        maxBarThickness: 56
                     }]
                 },
                 options: {
@@ -3673,28 +4636,143 @@ CREATE POLICY "Authenticated delete for pajsk-pdfs"
                     plugins: { legend: { display: false } }
                 }
             });
+        }
 
-            adminCharts.activityBar = new Chart(document.getElementById("chart-activity-bar").getContext("2d"), {
+        // Individual Student Deep-Dive Analytics Functions
+        function populateIndividualFilterClasses() {
+            const sel = document.getElementById("ind-filter-kelas");
+            if (!sel) return;
+            const kelases = [...new Set(cachedAdminRecords.map(s => s.kelas).filter(Boolean))].sort();
+            const cur = sel.value;
+            sel.innerHTML = `<option value="ALL">全部班级 · Semua Kelas</option>` +
+                kelases.map(k => `<option value="${escapeHTML(k)}">${escapeHTML(k)}</option>`).join("");
+            if (kelases.includes(cur)) sel.value = cur;
+        }
+
+        function populateIndividualStudentOptions() {
+            const cls = document.getElementById("ind-filter-kelas")?.value || "ALL";
+            const stuSel = document.getElementById("ind-student-select");
+            if (!stuSel) return;
+
+            const filtered = cachedAdminRecords
+                .filter(s => cls === "ALL" || s.kelas === cls)
+                .sort((a, b) => (a.nama || "").localeCompare(b.nama || ""));
+
+            const curMykad = stuSel.value;
+            stuSel.innerHTML = filtered.length === 0
+                ? `<option value="">-- 暂无学生档案 / Tiada Murid --</option>`
+                : filtered.map(s => `<option value="${escapeHTML(s.mykad)}">[${escapeHTML(s.kelas)}] ${escapeHTML(s.nama)} (${escapeHTML(s.mykad)}) — ${Number(s.markah_10_peratus).toFixed(2)}/${s.gred}</option>`).join("");
+
+            if (filtered.some(s => s.mykad === curMykad)) {
+                stuSel.value = curMykad;
+            }
+            renderIndividualAnalytics();
+        }
+
+        function renderIndividualAnalytics() {
+            const mykad = document.getElementById("ind-student-select")?.value;
+            const contentBox = document.getElementById("ind-analysis-content");
+            if (!mykad || !contentBox) {
+                if (contentBox) contentBox.classList.add("hidden");
+                return;
+            }
+
+            const student = cachedAdminRecords.find(s => s.mykad === mykad);
+            if (!student) {
+                contentBox.classList.add("hidden");
+                return;
+            }
+
+            contentBox.classList.remove("hidden");
+
+            document.getElementById("ind-kelas-badge").textContent = `${student.kelas || "-"} · ${student.tahun || ""}`;
+            document.getElementById("ind-mykad-badge").textContent = `No. MyKad: ${student.mykad}`;
+            document.getElementById("ind-student-nama").textContent = student.nama;
+            document.getElementById("ind-cgpa-val").textContent = Number(student.gpa || 0).toFixed(2);
+            document.getElementById("ind-gred-val").textContent = `${Number(student.markah_10_peratus || 0).toFixed(2)} / ${student.gred}`;
+            document.getElementById("ind-btn-view-pdf").onclick = () => openAdminPdfModal(student.mykad);
+
+            document.getElementById("ind-uniform-nama").textContent = student.uniform_nama || "-";
+            document.getElementById("ind-uniform-skor").textContent = `${student.uniform_skor || 0} (${Number(student.uniform_peratus || 0).toFixed(2)}%)`;
+
+            document.getElementById("ind-kelab-nama").textContent = student.kelab_nama || "-";
+            document.getElementById("ind-kelab-skor").textContent = `${student.kelab_skor || 0} (${Number(student.kelab_peratus || 0).toFixed(2)}%)`;
+
+            document.getElementById("ind-sukan-nama").textContent = student.sukan_nama || "-";
+            document.getElementById("ind-sukan-skor").textContent = `${student.sukan_skor || 0} (${Number(student.sukan_peratus || 0).toFixed(2)}%)`;
+
+            document.getElementById("ind-ekstra-skor").textContent = `+${student.ekstra_skor || 0}`;
+            document.getElementById("ind-pernyataan-text").textContent = student.pernyataan || "-";
+
+            // Compute Class Average & School Average for Comparison Chart
+            const classPeers = cachedAdminRecords.filter(s => s.kelas === student.kelas);
+            const schoolPeers = cachedAdminRecords;
+
+            const calcAvg = (arr, field, scale = 1) => {
+                if (!arr.length) return 0;
+                return Number(((arr.reduce((sum, x) => sum + Number(x[field] || 0), 0) / arr.length) * scale).toFixed(2));
+            };
+
+            const stuSeries = [
+                Number(student.uniform_peratus || 0),
+                Number(student.kelab_peratus || 0),
+                Number(student.sukan_peratus || 0),
+                Number((Number(student.markah_10_peratus || 0) * 10).toFixed(2))
+            ];
+            const classSeries = [
+                calcAvg(classPeers, "uniform_peratus"),
+                calcAvg(classPeers, "kelab_peratus"),
+                calcAvg(classPeers, "sukan_peratus"),
+                calcAvg(classPeers, "markah_10_peratus", 10)
+            ];
+            const schoolSeries = [
+                calcAvg(schoolPeers, "uniform_peratus"),
+                calcAvg(schoolPeers, "kelab_peratus"),
+                calcAvg(schoolPeers, "sukan_peratus"),
+                calcAvg(schoolPeers, "markah_10_peratus", 10)
+            ];
+
+            if (adminCharts.indCompare) adminCharts.indCompare.destroy();
+            adminCharts.indCompare = new Chart(document.getElementById("chart-individual-compare").getContext("2d"), {
                 type: "bar",
                 data: {
-                    labels: activityStats.map(a => a.label),
-                    datasets: [{
-                        label: "Purata (%)",
-                        data: activityStats.map(a => a.avg),
-                        backgroundColor: "#0f294a",
-                        borderRadius: 6,
-                        maxBarThickness: 24
-                    }]
+                    labels: [
+                        "制服团体 · Beruniform (%)",
+                        "学会协会 · Kelab (%)",
+                        "体育球类 · Sukan (%)",
+                        "10% 折算分 · Skor 10% (×10)"
+                    ],
+                    datasets: [
+                        {
+                            label: `${student.nama}`,
+                            data: stuSeries,
+                            backgroundColor: "#1d4ed8",
+                            borderRadius: 6
+                        },
+                        {
+                            label: `班级平均 · Purata ${student.kelas}`,
+                            data: classSeries,
+                            backgroundColor: "#059669",
+                            borderRadius: 6
+                        },
+                        {
+                            label: "全校平均 · Purata Sekolah",
+                            data: schoolSeries,
+                            backgroundColor: "#94a3b8",
+                            borderRadius: 6
+                        }
+                    ]
                 },
                 options: {
-                    indexAxis: "y",
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        x: { beginAtZero: true, max: 100, grid: { color: "#f1f5f9" } },
-                        y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+                        y: { beginAtZero: true, max: 100, grid: { color: "#f1f5f9" } },
+                        x: { grid: { display: false } }
                     },
-                    plugins: { legend: { display: false } }
+                    plugins: {
+                        legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 11 } } }
+                    }
                 }
             });
         }
@@ -3725,35 +4803,58 @@ CREATE POLICY "Authenticated delete for pajsk-pdfs"
         }
 
         // =====================================================================
-        // 14. ADMIN SECTION C: STUDENT PDF RECORDS REPOSITORY
+        // 14. ADMIN SECTION C: STUDENT PDF RECORDS REPOSITORY & BATCH DELETE
         // =====================================================================
         function populateRecordsFilters() {
-            const sel = document.getElementById("rec-filter-kelas");
+            const tahunSel = document.getElementById("rec-filter-tahun");
+            const kelasSel = document.getElementById("rec-filter-kelas");
+            const tahuns = [...new Set(cachedAdminRecords.map(s => s.tahun).filter(Boolean))].sort();
             const kelases = [...new Set(cachedAdminRecords.map(s => s.kelas).filter(Boolean))].sort();
-            const cur = sel.value;
 
-            sel.innerHTML = `<option value="ALL">所有班级 · Semua Kelas</option>` +
-                kelases.map(k => `<option value="${escapeHTML(k)}">${escapeHTML(k)}</option>`).join("");
-            if (kelases.includes(cur)) sel.value = cur;
+            if (tahunSel) {
+                const curT = tahunSel.value;
+                tahunSel.innerHTML = `<option value="ALL">所有年级 · Semua Tahun</option>` +
+                    tahuns.map(tVal => `<option value="${escapeHTML(tVal)}">${escapeHTML(tVal)}</option>`).join("");
+                if (tahuns.includes(curT)) tahunSel.value = curT;
+            }
+
+            if (kelasSel) {
+                const curK = kelasSel.value;
+                kelasSel.innerHTML = `<option value="ALL">所有班级 · Semua Kelas</option>` +
+                    kelases.map(k => `<option value="${escapeHTML(k)}">${escapeHTML(k)}</option>`).join("");
+                if (kelases.includes(curK)) kelasSel.value = curK;
+            }
         }
 
-        function renderStudentRecordsTable() {
+        function getFilteredStudentRecords() {
             const q = document.getElementById("rec-search-input").value.trim().toLowerCase();
+            const tahunFilter = document.getElementById("rec-filter-tahun")?.value || "ALL";
             const clsFilter = document.getElementById("rec-filter-kelas").value;
             const grdFilter = document.getElementById("rec-filter-gred").value;
 
-            const filtered = cachedAdminRecords.filter(s => {
+            return cachedAdminRecords.filter(s => {
                 const okQ = !q || (s.nama || "").toLowerCase().includes(q) || (s.mykad || "").includes(normalizeMyKad(q));
+                const okT = tahunFilter === "ALL" || s.tahun === tahunFilter;
                 const okC = clsFilter === "ALL" || s.kelas === clsFilter;
                 const okG = grdFilter === "ALL" || s.gred === grdFilter;
-                return okQ && okC && okG;
+                return okQ && okT && okC && okG;
             });
+        }
+
+        function renderStudentRecordsTable() {
+            const filtered = getFilteredStudentRecords();
 
             document.getElementById("rec-summary-count").textContent = `${filtered.length} / ${cachedAdminRecords.length}`;
             const tbody = document.getElementById("rec-table-body");
 
+            const selectAllEl = document.getElementById("rec-select-all");
+            if (selectAllEl) {
+                selectAllEl.checked = filtered.length > 0 && filtered.every(s => selectedRecordMyKads.has(s.mykad));
+            }
+            updateBatchSelectionBar();
+
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="9" class="py-10 text-center text-slate-400">未找到学生档案 · Tiada rekod ditemui</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="10" class="py-10 text-center text-slate-400">未找到学生档案 · Tiada rekod ditemui</td></tr>`;
                 return;
             }
 
@@ -3767,10 +4868,16 @@ CREATE POLICY "Authenticated delete for pajsk-pdfs"
 
             tbody.innerHTML = filtered.map(s => {
                 const timeStr = s.updated_at ? new Date(s.updated_at).toLocaleDateString("zh-CN") : "-";
+                const isChecked = selectedRecordMyKads.has(s.mykad);
 
                 return `
-                    <tr class="hover:bg-slate-50 transition">
-                        <td class="py-3 px-4">
+                    <tr class="${isChecked ? "bg-blue-50/70" : "hover:bg-slate-50"} transition">
+                        <td class="py-3 pl-4 pr-2">
+                            <input type="checkbox" ${isChecked ? "checked" : ""}
+                                onchange="toggleRecordSelection('${escapeHTML(s.mykad)}', this.checked)"
+                                class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
+                        </td>
+                        <td class="py-3 px-3">
                             <div class="font-bold text-slate-900">${escapeHTML(s.nama)}</div>
                             <div class="text-xs font-mono text-slate-500">${escapeHTML(s.mykad)}</div>
                         </td>
@@ -3814,31 +4921,143 @@ CREATE POLICY "Authenticated delete for pajsk-pdfs"
             refreshLucideIcons();
         }
 
-        // =====================================================================
-        // 15. MODALS & SHARED UTILITIES
-        // =====================================================================
-        async function openAdminPdfModal(mykad) {
-            const st = cachedAdminRecords.find(r => r.mykad === mykad) || await fetchRecordByMyKad(mykad);
-            if (!st) {
-                showToast("未找到该学生的 PDF 记录 / Rekod PDF tidak ditemui", "error");
+        function toggleSelectAllRecords(checked) {
+            const filtered = getFilteredStudentRecords();
+            filtered.forEach(s => {
+                if (checked) selectedRecordMyKads.add(s.mykad);
+                else selectedRecordMyKads.delete(s.mykad);
+            });
+            renderStudentRecordsTable();
+        }
+
+        function toggleRecordSelection(mykad, checked) {
+            if (checked) selectedRecordMyKads.add(mykad);
+            else selectedRecordMyKads.delete(mykad);
+
+            const filtered = getFilteredStudentRecords();
+            const selectAllEl = document.getElementById("rec-select-all");
+            if (selectAllEl) {
+                selectAllEl.checked = filtered.length > 0 && filtered.every(s => selectedRecordMyKads.has(s.mykad));
+            }
+            updateBatchSelectionBar();
+        }
+
+        function clearRecordSelection() {
+            selectedRecordMyKads.clear();
+            renderStudentRecordsTable();
+        }
+
+        function updateBatchSelectionBar() {
+            const bar = document.getElementById("rec-batch-bar");
+            const badge = document.getElementById("rec-selected-badge");
+            const txt = document.getElementById("rec-selected-text");
+            if (!bar) return;
+
+            const count = selectedRecordMyKads.size;
+            if (count > 0) {
+                bar.classList.remove("hidden");
+                badge.textContent = `${count}`;
+                txt.textContent = currentLang === "bm"
+                    ? `${count} rekod murid dipilih`
+                    : currentLang === "zh"
+                    ? `已选中 ${count} 份学生档案`
+                    : `已选中 ${count} 份档案 · ${count} rekod dipilih`;
+            } else {
+                bar.classList.add("hidden");
+            }
+        }
+
+        function confirmBatchDeleteSelected() {
+            const targets = cachedAdminRecords.filter(s => selectedRecordMyKads.has(s.mykad));
+            if (targets.length === 0) return;
+
+            openConfirmDialog(
+                "批量删除选中 PDF 档案 · Padam Berkelompok Rekod & PDF",
+                `确定要永久删除已选中的 ${targets.length} 名学生成绩记录及其在 Supabase Storage 中的官方 PDF 原件吗？此操作无法撤销！ / Adakah anda pasti mahu memadam ${targets.length} rekod dan fail PDF terpilih secara kekal?`,
+                async () => {
+                    await executeBatchDeleteRecords(targets);
+                }
+            );
+        }
+
+        function confirmBatchDeleteFiltered() {
+            const targets = getFilteredStudentRecords();
+            if (targets.length === 0) {
+                showToast("当前筛选列表为空 / Tiada rekod dalam tapisan semasa", "info");
                 return;
             }
 
-            document.getElementById("modal-pdf-title").textContent = `${st.nama} (${st.kelas})`;
-            document.getElementById("modal-pdf-sub").textContent = `No. MyKad: ${st.mykad}`;
-            document.getElementById("admin-pdf-modal").classList.remove("hidden");
-            refreshLucideIcons();
+            openConfirmDialog(
+                "删除当前筛选全部档案 · Padam Semua Rekod Tapisan",
+                `确定要永久删除当前筛选结果中的全部 ${targets.length} 名学生成绩记录及云端 PDF 文件吗？ / Adakah anda pasti mahu memadam semua ${targets.length} rekod dalam tapisan ini?`,
+                async () => {
+                    await executeBatchDeleteRecords(targets);
+                }
+            );
+        }
+
+        async function executeBatchDeleteRecords(recordsToDelete) {
+            if (!supabaseClient || recordsToDelete.length === 0) return;
 
             try {
-                const buf = await loadPdfBufferForRecord(st);
-                document.getElementById("modal-btn-parent-view").onclick = () => openParentPortalNewWindow(st.mykad);
-                document.getElementById("modal-btn-download").onclick = () => {
-                    const blob = new Blob([buf], { type: "application/pdf" });
-                    triggerBlobDownload(blob, `PAJSK_${st.mykad}.pdf`);
-                };
-                await renderPdfBufferToCanvasContainer(buf, document.getElementById("modal-pdf-canvas-box"), 1.0, null);
+                showToast(`正在批量删除 ${recordsToDelete.length} 份云端档案... / Memadam ${recordsToDelete.length} rekod...`, "info");
+
+                // 1. Batch remove PDF files from Supabase Storage
+                const storagePaths = [];
+                recordsToDelete.forEach(r => {
+                    if (r.pdf_path) storagePaths.push(r.pdf_path);
+                    storagePaths.push(`records/${r.mykad}.pdf`);
+                });
+                const uniquePaths = [...new Set(storagePaths)];
+                if (uniquePaths.length > 0) {
+                    await supabaseClient.storage.from(STORAGE_BUCKET).remove(uniquePaths);
+                }
+
+                // 2. Batch delete rows from PostgreSQL `pajsk_records`
+                const mykads = recordsToDelete.map(r => r.mykad);
+                const { error } = await supabaseClient
+                    .from(RECORDS_TABLE)
+                    .delete()
+                    .in("mykad", mykads);
+                if (error) throw error;
+
+                mykads.forEach(m => selectedRecordMyKads.delete(m));
+                await refreshAllAdminData();
+                populateRecordsFilters();
+                renderStudentRecordsTable();
+                showToast(`已成功批量删除 ${recordsToDelete.length} 份学生档案与 PDF / ${recordsToDelete.length} rekod berjaya dipadam!`, "success");
             } catch (err) {
-                showToast(`加载 PDF 失败 / Gagal memuatkan PDF: ${err.message}`, "error");
+                console.error("Batch delete failed:", err);
+                showToast(`批量删除失败 / Gagal memadam berkelompok: ${err.message}`, "error");
+            }
+        }
+
+        async function openAdminPdfModal(mykad) {
+            const record = cachedAdminRecords.find(r => r.mykad === mykad);
+            if (!record) {
+                showToast("未找到该学生的档案记录 / Rekod murid tidak ditemui", "error");
+                return;
+            }
+
+            document.getElementById("modal-pdf-title").textContent = `${record.nama} (${record.mykad})`;
+            document.getElementById("modal-pdf-sub").textContent = `${record.kelas || "-"} · ${record.tahun || ""} · 10% / Gred: ${Number(record.markah_10_peratus || 0).toFixed(2)} / ${record.gred}`;
+
+            const modal = document.getElementById("admin-pdf-modal");
+            const canvasBox = document.getElementById("modal-pdf-canvas-box");
+            modal.classList.remove("hidden");
+            refreshLucideIcons();
+
+            document.getElementById("modal-btn-parent-view").onclick = () => openParentPortalNewWindow(record.mykad);
+
+            try {
+                const pdfBuf = await loadPdfBufferForRecord(record);
+                document.getElementById("modal-btn-download").onclick = () => {
+                    const blob = new Blob([pdfBuf], { type: "application/pdf" });
+                    triggerBlobDownload(blob, `PAJSK_${record.mykad}.pdf`);
+                };
+                await renderPdfBufferToCanvasContainer(pdfBuf, canvasBox, 1.0);
+            } catch (err) {
+                canvasBox.innerHTML = `<div class="py-12 text-center text-rose-600 text-sm font-semibold">${escapeHTML(err.message)}</div>`;
             }
         }
 
